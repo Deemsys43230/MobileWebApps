@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.intent.action.CALL_PRIVILEGED"></uses-permission>
 
     <application
             android:allowBackup="true"
