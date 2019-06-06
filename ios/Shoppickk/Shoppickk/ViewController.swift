@@ -28,7 +28,6 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         self.navigationItem.title = "Shoppickk"
         self.navigationController?.navigationBar.tintColor = .white
         
-        
         let shareBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Share"), style: .plain, target: self, action: #selector(Share))
         let callBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Call"), style: .plain, target: self, action: #selector(Call))
         let emailBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Email"), style: .plain, target: self, action: #selector(Message))
@@ -39,6 +38,7 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
         self.defaults = UserDefaults.standard
         self.webKitView.navigationDelegate = self
         let reachability = Reachability()!

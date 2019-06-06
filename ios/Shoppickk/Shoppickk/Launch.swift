@@ -22,6 +22,7 @@ class Launch: UIViewController {
     override func viewDidLoad() {
         // page onload
         self.Indicator.startAnimating()
+        self.navigationController?.navigationBar.isHidden = true
         
     }
     
