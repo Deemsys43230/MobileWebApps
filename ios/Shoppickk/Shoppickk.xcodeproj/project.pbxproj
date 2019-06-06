@@ -367,7 +367,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.deemsysinc.Shoppickk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deemsysinc.shoppickk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Wildcard Development";
 				SWIFT_VERSION = 5.0;
@@ -388,7 +388,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.deemsysinc.Shoppickk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deemsysinc.shoppickk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Wildcard Development";
 				SWIFT_VERSION = 5.0;
