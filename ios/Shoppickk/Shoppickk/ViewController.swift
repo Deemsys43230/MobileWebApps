@@ -32,7 +32,7 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         let callBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Call"), style: .plain, target: self, action: #selector(Call))
         let emailBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Email"), style: .plain, target: self, action: #selector(Message))
         self.navigationItem.setRightBarButtonItems([emailBarButton,callBarButton], animated: true)
-        let rateBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "star"), style: .plain, target: self, action: #selector(Rate))
+        let rateBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "thumbs up"), style: .plain, target: self, action: #selector(Rate))
         self.navigationItem.setLeftBarButtonItems([rateBarButton,shareBarButton], animated: true)
     }
     
