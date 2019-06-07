@@ -13,7 +13,7 @@ import Reachability
 
 
 
-class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNavigationDelegate,UIWebViewDelegate {
+class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNavigationDelegate,UIWebViewDelegate, UIScrollViewDelegate {
     var defaults:UserDefaults!
     
     
@@ -41,6 +41,7 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         self.navigationController?.navigationBar.isHidden = false
         self.defaults = UserDefaults.standard
         self.webKitView.navigationDelegate = self
+        self.webKitView.scrollView.delegate = self
         let reachability = Reachability()!
         if reachability.connection != .none{
             self.LoadSite()
@@ -48,23 +49,6 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
             self.displayNetworkAlert()
         }
         webKitView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
-    }
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-            if keyPath == "estimatedProgress"{
-                //print (Float(webKitView.estimatedProgress))
-                self.progress.progress = Float(webKitView.estimatedProgress)
-            }
-    }
-    
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        let reachability = Reachability()!
-        if reachability.connection != .none{
-            decisionHandler(.allow)
-            return
-        }
-        self.displayNetworkAlert()
-        decisionHandler(.cancel)
     }
     
     func LoadSite(){
@@ -112,6 +96,28 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         let alertController = UIAlertController(title: "No Internet ☹", message: "Please check your internet connection.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: - Webkit and Scroll Deleagtes
+    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        scrollView.panGestureRecognizer.isEnabled = false
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "estimatedProgress"{
+            //print (Float(webKitView.estimatedProgress))
+            self.progress.progress = Float(webKitView.estimatedProgress)
+        }
+    }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        let reachability = Reachability()!
+        if reachability.connection != .none{
+            decisionHandler(.allow)
+            return
+        }
+        self.displayNetworkAlert()
+        decisionHandler(.cancel)
     }
 
 
