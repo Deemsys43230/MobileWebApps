@@ -54,29 +54,7 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         webKitView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-            if keyPath == "estimatedProgress"{
-                //print (Float(webKitView.estimatedProgress))
-                self.progress.progress = Float(webKitView.estimatedProgress)
-            }
-    }
-    
-    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
-        scrollView.pinchGestureRecognizer?.isEnabled = false
-    }
-    
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        let reachability = Reachability()!
-        if reachability.connection != .none{
-            decisionHandler(.allow)
-            return
-        }
-        self.displayNetworkAlert()
-        decisionHandler(.cancel)
-    }
-    
-    func LoadSite(){
-        print(defaults!)
+    private func LoadSite(){
         if let url = URL(string: defaults.string(forKey: "websiteUrl")!){
             let request = URLRequest(url: url)
             webKitView.load(request)
@@ -123,7 +101,7 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         barCodeController.codeDelegate = self
         barCodeController.errorDelegate = self
         barCodeController.dismissalDelegate = self
-        self.setUpBarCodeScanner()
+        self.barCodeController.title = "Scan barcode"
         self.navigationController?.present(barCodeController, animated: true, completion: nil)
         
     }
@@ -134,12 +112,35 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         self.present(alertController, animated: true, completion: nil)
     }
     
+    // MARK: - Webkit and Scroll Delegates
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "estimatedProgress"{
+            //print (Float(webKitView.estimatedProgress))
+            self.progress.progress = Float(webKitView.estimatedProgress)
+        }
+    }
+    
+    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        scrollView.pinchGestureRecognizer?.isEnabled = false
+    }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        let reachability = Reachability()!
+        if reachability.connection != .none{
+            decisionHandler(.allow)
+            return
+        }
+        self.displayNetworkAlert()
+        decisionHandler(.cancel)
+    }
+    
+    // MARK: - Scanner Delegates
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
         print(code)
         // Process bar code and fetch the handle
         controller.reset()
         controller.dismiss(animated: true, completion: nil)
-        //controller.resetWithError(message: "Product not found!")
+        // Load the webview with handle url
     }
 
     func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
@@ -150,9 +151,6 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         controller.dismiss(animated: true, completion: nil)
     }
     
-    private func setUpBarCodeScanner(){
-        self.barCodeController.title = "Scan barcode"
-    }
 
 }
 
