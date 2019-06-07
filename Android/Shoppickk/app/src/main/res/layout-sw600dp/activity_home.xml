@@ -14,17 +14,26 @@
             android:background="@color/colorsplash"
             android:id="@+id/relativeLayout"
             app:layout_constraintTop_toTopOf="parent">
-        <TextView
-                android:text="Rate Us"
+        <!--<TextView-->
+                <!--android:text="Rate Us"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/rateus"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:textSize="18sp"-->
+                <!--android:textStyle="normal"-->
+                <!--android:textColor="#FFFFFF"/>-->
+        <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/rateus"
                 android:paddingLeft="10dp"
+                android:src="@drawable/rating"
                 android:layout_alignParentLeft="true"
-                android:layout_marginTop="10dp"
-                android:textSize="18sp"
-                android:textStyle="normal"
-                android:textColor="#FFFFFF"/>
+                android:layout_centerVertical="true"/>
+
         <TextView
                 android:text="Shoppickk"
                 android:layout_width="wrap_content"

@@ -35,7 +35,7 @@ class homeActivity : AppCompatActivity() {
         lateinit var email:ImageView
         lateinit var share:ImageView
         lateinit var webview:WebView
-        lateinit var rateus:TextView
+        lateinit var rateus:ImageView
         lateinit var  progressBar:ProgressBar
         lateinit var sharedPreference: SharedPreferences
         lateinit  var statusUtility:utilityClass
@@ -74,7 +74,7 @@ class homeActivity : AppCompatActivity() {
         Log.d("jsonobjectdata",""+getvalue)
 
 
-        webview.getSettings().setBuiltInZoomControls(true)
+//        webview.getSettings().setBuiltInZoomControls(true)
         webview.setVerticalScrollBarEnabled(false)
         webview.setHorizontalScrollBarEnabled(false)
         webview.getSettings().setDisplayZoomControls(false)
