@@ -8,5 +8,6 @@ target 'NellaiMarts' do
 	pod 'ReachabilitySwift'
  	pod 'Alamofire'
  	pod 'SwiftyJSON'
+  pod 'BarcodeScanner'
 
 end

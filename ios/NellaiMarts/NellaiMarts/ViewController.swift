@@ -10,11 +10,13 @@ import UIKit
 import MessageUI
 import WebKit
 import Reachability
+import BarcodeScanner
 
 
 
-class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNavigationDelegate,UIWebViewDelegate,UIScrollViewDelegate {
+class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNavigationDelegate,UIWebViewDelegate,UIScrollViewDelegate,BarcodeScannerCodeDelegate,BarcodeScannerErrorDelegate,BarcodeScannerDismissalDelegate {
     var defaults:UserDefaults!
+    var barCodeController:BarcodeScannerViewController! = nil
     
     
 
@@ -35,6 +37,7 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         self.navigationItem.setRightBarButtonItems([emailBarButton,callBarButton], animated: true)
         let scanBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "barcode"), style: .plain, target: self, action: #selector(Scan))
         self.navigationItem.setLeftBarButtonItems([scanBarButton,shareBarButton], animated: true)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -116,6 +119,13 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
     
     @objc func Scan(){
         // Bar code scanning
+        self.barCodeController = BarcodeScannerViewController()
+        barCodeController.codeDelegate = self
+        barCodeController.errorDelegate = self
+        barCodeController.dismissalDelegate = self
+        self.setUpBarCodeScanner()
+        self.navigationController?.present(barCodeController, animated: true, completion: nil)
+        
     }
     
     func displayNetworkAlert() {
@@ -123,7 +133,26 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         alertController.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
+    
+    func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
+        print(code)
+        // Process bar code and fetch the handle
+        controller.reset()
+        controller.dismiss(animated: true, completion: nil)
+        //controller.resetWithError(message: "Product not found!")
+    }
 
+    func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
+         print(error)
+    }
+
+    func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    private func setUpBarCodeScanner(){
+        self.barCodeController.title = "Scan barcode"
+    }
 
 }
 

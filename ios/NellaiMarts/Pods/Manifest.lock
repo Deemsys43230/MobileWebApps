@@ -1,24 +1,28 @@
 PODS:
   - Alamofire (4.8.2)
+  - BarcodeScanner (4.1.3)
   - ReachabilitySwift (4.3.1)
   - SwiftyJSON (5.0.0)
 
 DEPENDENCIES:
   - Alamofire
+  - BarcodeScanner
   - ReachabilitySwift
   - SwiftyJSON
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - BarcodeScanner
     - ReachabilitySwift
     - SwiftyJSON
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  BarcodeScanner: fce1ad2b3f28286b1ab5091fe0979789618bee27
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 7ce7b26acba14a98d384135b907751b196ddf6ae
+PODFILE CHECKSUM: ec2b8a4fb8801744586cb6979cf952dab36bc535
 
 COCOAPODS: 1.7.1
