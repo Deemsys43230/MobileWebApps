@@ -89,7 +89,7 @@ class homeActivity : AppCompatActivity() {
         jsonobject = JSONObject(getvalue)
 
 
-        webview.getSettings().setBuiltInZoomControls(true)
+//        webview.getSettings().setBuiltInZoomControls(true)
         webview.setVerticalScrollBarEnabled(false)
         webview.setHorizontalScrollBarEnabled(false)
         webview.getSettings().setDisplayZoomControls(false)

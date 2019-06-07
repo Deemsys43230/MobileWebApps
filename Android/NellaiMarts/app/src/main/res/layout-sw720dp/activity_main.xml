@@ -19,8 +19,8 @@
         <ProgressBar
                 android:indeterminateTint="@color/colorsplash"
                 style="?android:attr/progressBarStyle"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:id="@+id/progressBar"
                 android:layout_marginRight="5dp"
 
