@@ -80,9 +80,10 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         controller.dismiss(animated: true, completion: nil)
     }
     
-    @objc func Share(){
+    @objc func Share(sender:UIBarButtonItem){
         let shareContent = "\(defaults.string(forKey: "share")!) \(" ") \(defaults.string(forKey: "iosRateusUrl")!)"
         let activityController = UIActivityViewController(activityItems: [shareContent], applicationActivities: [])
+        activityController.popoverPresentationController?.barButtonItem = sender
         self.present(activityController, animated: true, completion: nil)
     }
     
