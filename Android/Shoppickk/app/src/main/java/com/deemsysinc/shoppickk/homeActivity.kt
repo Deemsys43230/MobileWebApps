@@ -64,10 +64,6 @@ class homeActivity : AppCompatActivity() {
 
         sharedPreference= PreferenceManager.getDefaultSharedPreferences(this)
 
-        if(sharedPreference.contains("ShoppickkDetails")){
-
-            Log.d("jsonobject data","result data")
-        }
 
         var getvalue = sharedPreference.getString("ShoppickkDetails","")
         jsonobject = JSONObject(getvalue)
@@ -128,7 +124,8 @@ class homeActivity : AppCompatActivity() {
 
         rateus.setOnClickListener {
             val openURL = Intent(android.content.Intent.ACTION_VIEW)
-            openURL.data = Uri.parse("https://play.google.com/store/apps/details?id=com.deemsysinc.cyberhealthapp")
+            var androidRateusUrl:String = jsonobject.getString("androidRateusUrl")
+            openURL.data = Uri.parse(androidRateusUrl)
             startActivity(openURL)
         }
 

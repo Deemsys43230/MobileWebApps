@@ -1,0 +1,4 @@
+#Tue Jun 11 11:07:58 IST 2019
+base.0=/Users/uday/Documents/GitHub/MobileWebApps/Android/NellaiMarts/app/build/intermediates/transforms/dexMerger/debug/4
+path.0=classes.dex
+renamed.0=classes.dex

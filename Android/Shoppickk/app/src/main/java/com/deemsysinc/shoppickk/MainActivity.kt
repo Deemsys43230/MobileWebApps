@@ -88,27 +88,35 @@ class MainActivity :  AppCompatActivity(), NetWorkChangeReciver.ConnectivityRece
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
-            progressBar.visibility = View.GONE
-            loading.visibility = View.GONE
-            val editor: SharedPreferences.Editor = sharedPreference.edit()
-            editor.putString("ShoppickkDetails", result)
-            editor.commit()
-            val intent = Intent(this@MainActivity, homeActivity::class.java)
-            startActivity(intent)
+            if(result != ""){
+                progressBar.visibility = View.GONE
+                loading.visibility = View.GONE
+                val editor: SharedPreferences.Editor = sharedPreference.edit()
+                editor.putString("ShoppickkDetails", result)
+                editor.commit()
+                val intent = Intent(this@MainActivity, homeActivity::class.java)
+                startActivity(intent)
+            }
+            else{
+                Toast.makeText(this@MainActivity,"Failed to reach server",Toast.LENGTH_LONG).show()
+            }
+
         }
 
 
         override fun doInBackground(vararg params: URL?): String {
 
             val connect = params[0]?.openConnection() as HttpURLConnection
-            connect.readTimeout = 8000
-            connect.connectTimeout = 8000
+//            connect.readTimeout = 8000
+//            connect.connectTimeout = 8000
             connect.requestMethod = "GET"
             connect.connect()
 
-            val responseCode: Int = connect.responseCode;
+            val responseCode: Int = connect.responseCode
             if (responseCode == 200) {
                 result = streamToString(connect.inputStream)
+            }else{
+                result = ""
             }
 
             return result
