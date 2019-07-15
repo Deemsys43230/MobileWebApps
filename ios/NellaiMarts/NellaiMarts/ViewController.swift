@@ -12,11 +12,17 @@ import WebKit
 import Reachability
 import BarcodeScanner
 
-
+enum requestTypeEnum:Int {
+    case url = 1
+    case html = 2
+}
 
 class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNavigationDelegate,UIWebViewDelegate,UIScrollViewDelegate,BarcodeScannerCodeDelegate,BarcodeScannerErrorDelegate,BarcodeScannerDismissalDelegate {
     var defaults:UserDefaults!
     var barCodeController:BarcodeScannerViewController! = nil
+    var loadUrl:String?
+    var requestType: requestTypeEnum!
+    var navTitle:String?
     
     
 
@@ -25,18 +31,19 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 47.0/255.0, green: 199.0/255.0, blue: 0.0/255.0, alpha: 1.0)
+       /* self.navigationController?.navigationBar.barTintColor = UIColor(red: 47.0/255.0, green: 199.0/255.0, blue: 0.0/255.0, alpha: 1.0)
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont(name: "Avenir Next", size: 21.0)!]
-        self.navigationItem.title = "Nellai Marts Inc"
-        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationItem.title = "Electronics"
+        self.navigationController?.navigationBar.tintColor = .white*/
         
         
-        let shareBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Share"), style: .plain, target: self, action: #selector(Share))
+        /*let shareBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Share"), style: .plain, target: self, action: #selector(Share))
         let callBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Call"), style: .plain, target: self, action: #selector(Call))
         let emailBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Email"), style: .plain, target: self, action: #selector(Message))
         self.navigationItem.setRightBarButtonItems([emailBarButton,callBarButton], animated: true)
         let scanBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "barcode"), style: .plain, target: self, action: #selector(Scan))
-        self.navigationItem.setLeftBarButtonItems([scanBarButton,shareBarButton], animated: true)
+        self.navigationItem.setLeftBarButtonItems([scanBarButton,shareBarButton], animated: true)*/
+       
         
     }
     
@@ -55,10 +62,29 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
     }
     
     private func LoadSite(){
-        if let url = URL(string: defaults.string(forKey: "websiteUrl")!){
-            let request = URLRequest(url: url)
-            webKitView.load(request)
+        switch requestType.rawValue {
+        case requestTypeEnum.html.rawValue:
+            if let html = self.loadUrl{
+                webKitView.loadHTMLString(html, baseURL: nil)
+            }
+            self.setupNavBar()
+            break;
+        default:
+            if let url = URL(string: self.loadUrl!){
+                let request = URLRequest(url: url)
+                webKitView.load(request)
+            }
+            break;
         }
+        
+    }
+    
+    func setupNavBar(){
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont(name: "Avenir Next", size: 21.0)!]
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 47.0/255.0, green: 199.0/255.0, blue: 0.0/255.0, alpha: 1.0)
+        self.navigationController?.navigationItem.hidesBackButton = false
+        self.navigationItem.title = self.navTitle!
     }
     
     @objc func Call(){

@@ -15,7 +15,7 @@ import SwiftyJSON
 
 class Launch: UIViewController {
     
-    let fileUrl:String = "https://mobilewebapps.s3.amazonaws.com/nellaimarts.json"
+    let fileUrl:String = "https://mobilewebapps.s3.amazonaws.com/nellaimart.json"
     let reachability = Reachability()!
     
     @IBOutlet weak var Indicator: UIActivityIndicatorView!
@@ -69,13 +69,14 @@ class Launch: UIViewController {
                 if let response = try? JSON(data: responseData.result.value!, options: .mutableContainers){
                     self.Indicator.stopAnimating()
                     let dict = response.dictionaryObject as! [String:String]
+                    print(dict)
                     let defaults = UserDefaults.standard
                     defaults.setValuesForKeys(dict)
                     defaults.synchronize()
                     // Navigate
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let VC = storyboard.instantiateViewController(withIdentifier: "main") as! ViewController
-                    self.navigationController?.pushViewController(VC, animated: true)
+                    let VC = storyboard.instantiateViewController(withIdentifier: "TabVC") as! TabController
+                    self.present(VC, animated: true, completion: nil)
                 }
             }
         }

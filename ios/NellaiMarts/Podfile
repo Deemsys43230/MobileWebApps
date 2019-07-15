@@ -9,5 +9,7 @@ target 'NellaiMarts' do
  	pod 'Alamofire'
  	pod 'SwiftyJSON'
   pod 'BarcodeScanner'
+  pod 'GraphQL-Swift'
+  pod 'NVActivityIndicatorView'
 
 end
