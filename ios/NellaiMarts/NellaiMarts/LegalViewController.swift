@@ -20,6 +20,7 @@ class LegalViewController: UITableViewController,UITabBarControllerDelegate,MFMa
     var faqContent:String!
     var defaults:UserDefaults!
     var indicator:NVActivityIndicatorView!
+    var barButtonItem : UIBarButtonItem!
     @IBOutlet var table: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -27,9 +28,10 @@ class LegalViewController: UITableViewController,UITabBarControllerDelegate,MFMa
         let legalQuery = LegalQuery()
         let reachability = Reachability()!
         defaults = UserDefaults.standard
-        print(self.table.frame.width,self.table.frame.height)
-        self.indicator = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 30, height: 30), type: .ballPulse, color: UIColor.AppGreenColor())
-        self.navigationItem.titleView = self.indicator
+        self.indicator = NVActivityIndicatorView(frame: CGRect(x: 0, y:
+            0, width: 20, height: 20), type: .lineSpinFadeLoader, color: UIColor.AppGreenColor())
+        self.barButtonItem = UIBarButtonItem(customView: self.indicator)
+        self.navigationItem.rightBarButtonItem = self.barButtonItem
         if reachability.connection != .none{
             self.indicator.startAnimating()
             manager.getDataForGraphQLRequest(withQuery: legalQuery) { (response, error) in
@@ -60,9 +62,9 @@ class LegalViewController: UITableViewController,UITabBarControllerDelegate,MFMa
                             // do nothing
                         }
                     }
-                    DispatchQueue.main.async {
-                        self.indicator.stopAnimating()
-                    }
+                }
+                DispatchQueue.main.async {
+                    self.indicator.stopAnimating()
                 }
             }
         }else{

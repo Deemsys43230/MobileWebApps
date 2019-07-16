@@ -54,6 +54,7 @@ class TabController:UITabBarController,UITabBarControllerDelegate{
                     let primaryDomain = shop["primaryDomain"] as! [String:Any]
                     defaults = UserDefaults.standard
                     defaults.set("\(primaryDomain["url"] as! String)/cart", forKey: "cartUrl")
+                    defaults.set(primaryDomain["url"] as! String, forKey: "domain")
                     defaults.set("\(primaryDomain["url"] as! String)/account", forKey: "accountUrl")
                     defaults.synchronize()
                 }
