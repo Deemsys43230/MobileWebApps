@@ -22,20 +22,31 @@ class LegalViewController: UITableViewController,UITabBarControllerDelegate,MFMa
     var indicator:NVActivityIndicatorView!
     var barButtonItem : UIBarButtonItem!
     @IBOutlet var table: UITableView!
+    @IBOutlet weak var location: UILabel!
+    let legalQuery = LegalQuery()
+    let hostQuery = HostQuery()
+    let reachability = Reachability()!
     
     override func viewWillAppear(_ animated: Bool) {
-        let manager = GraphQLManager()
-        let legalQuery = LegalQuery()
-        let reachability = Reachability()!
         defaults = UserDefaults.standard
         self.indicator = NVActivityIndicatorView(frame: CGRect(x: 0, y:
             0, width: 20, height: 20), type: .lineSpinFadeLoader, color: UIColor.AppGreenColor())
         self.barButtonItem = UIBarButtonItem(customView: self.indicator)
         self.navigationItem.rightBarButtonItem = self.barButtonItem
+        self.loadData()
+        self.setupNavBar()
+        
+    }
+    
+    func loadData(forIndex index:Int? = nil){
+        let manager = GraphQLManager()
         if reachability.connection != .none{
             self.indicator.startAnimating()
             manager.getDataForGraphQLRequest(withQuery: legalQuery) { (response, error) in
                 if error == nil{
+                    if index != nil{
+                        self.defaults.set(index, forKey: "index")
+                    }
                     let data = response!["data"] as! [AnyHashable:Any]
                     print(data)
                     let pages = data["pages"] as! [String:Any]
@@ -43,28 +54,26 @@ class LegalViewController: UITableViewController,UITabBarControllerDelegate,MFMa
                     for edge in edges{
                         let node = edge["node"] as! [String:Any]
                         switch node["id"] as! String{
-                        case "Z2lkOi8vc2hvcGlmeS9QYWdlLzM5MTI3Mjg1ODQw": // about us
+                        case self.defaults.string(forKey: "aboutus")!: // about us
                             self.aboutUSContent = (node["body"] as! String)
-                        break;
-                        case "Z2lkOi8vc2hvcGlmeS9QYWdlLzM5MTI3MzE4NjA4": // faq
+                            break;
+                        case self.defaults.string(forKey: "faq")!: // faq
                             self.faqContent = (node["body"] as! String)
-                        break;
-                        case "Z2lkOi8vc2hvcGlmeS9QYWdlLzM5MTI3MzUxMzc2": // privacy
+                            break;
+                        case self.defaults.string(forKey: "privacy")!: // privacy
                             self.privacyContent = (node["body"] as! String)
-                        break;
-                        case "Z2lkOi8vc2hvcGlmeS9QYWdlLzM5MTI3NDQ5Njgw": // refund
+                            break;
+                        case self.defaults.string(forKey: "refund")!: // refund
                             self.refundPolicyContent = (node["body"] as! String)
-                        break;
-                        case "Z2lkOi8vc2hvcGlmeS9QYWdlLzM5MTI3NTE1MjE2": // terms
+                            break;
+                        case self.defaults.string(forKey: "terms")!: // terms
                             self.TermsContent = (node["body"] as! String)
-                        break;
+                            break;
                         default: break
                             // do nothing
                         }
                     }
-                }
-                DispatchQueue.main.async {
-                    self.indicator.stopAnimating()
+                    self.loadHostData()
                 }
             }
         }else{
@@ -72,8 +81,6 @@ class LegalViewController: UITableViewController,UITabBarControllerDelegate,MFMa
             alertController.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
             self.present(alertController, animated: true, completion: nil)
         }
-        self.setupNavBar()
-        
     }
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?){
@@ -91,7 +98,7 @@ class LegalViewController: UITableViewController,UITabBarControllerDelegate,MFMa
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let VC = storyboard.instantiateViewController(withIdentifier: "main") as! ViewController
         
-        if indexPath.section == 0{
+        if indexPath.section == 1{
             switch indexPath.row {
             case 0:
                 VC.loadUrl = self.aboutUSContent
@@ -127,7 +134,7 @@ class LegalViewController: UITableViewController,UITabBarControllerDelegate,MFMa
                 break;
                 
             }
-        }else if indexPath.section == 1{
+        }else if indexPath.section == 2{
             switch indexPath.row {
             case 0:
                 VC.loadUrl = self.TermsContent
@@ -149,11 +156,57 @@ class LegalViewController: UITableViewController,UITabBarControllerDelegate,MFMa
                 break;
             }
             
+        }else{
+            let storeOptions = UIAlertController(title: "Location", message: "Select location to switch the store", preferredStyle: .actionSheet)
+            let action = UIAlertAction(title: "Close", style: .cancel, handler: nil)
+            storeOptions.addAction(action)
+            let storeLocations = defaults.value(forKey: "locations") as! [[String:Any]]
+            for (index,item) in storeLocations.enumerated(){
+                let action = UIAlertAction(title: item["location"] as? String, style: .default) { (UIAlertAction) in
+                    self.updateLocationData(forIndex: index)
+                }
+                storeOptions.addAction(action)
+            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: "locationCell")
+            if let popOver = storeOptions.popoverPresentationController{
+                popOver.sourceView = cell?.contentView
+                popOver.sourceRect = tableView.headerView(forSection: 0)!.frame
+            }
+            self.present(storeOptions, animated: true, completion: nil)
+            
         }
     }
     
+    func updateLocationData(forIndex index:Int!){
+        let locations = defaults.value(forKey: "locations")! as! [[String:Any]]
+        defaults.setValuesForKeys(locations[index])
+        defaults.synchronize()
+        self.loadData(forIndex: index)
+    }
     
+    func loadHostData(){
+        let manager = GraphQLManager()
+        manager.getDataForGraphQLRequest(withQuery: hostQuery) { (response, error) in
+            if error == nil{
+                let data = response!["data"] as! [AnyHashable:Any]
+                // save primary domain url to defaults
+                let shop = data["shop"] as! [String:Any]
+                let primaryDomain = shop["primaryDomain"] as! [String:Any]
+                self.defaults.set("\(primaryDomain["url"] as! String)/cart", forKey: "cartUrl")
+                self.defaults.set(primaryDomain["url"] as! String, forKey: "domain")
+                self.defaults.set("\(primaryDomain["url"] as! String)/account", forKey: "accountUrl")
+//                print(UserDefaults.standard.dictionaryRepresentation().values)
+                self.defaults.synchronize()
+            }
+            DispatchQueue.main.async {
+                self.indicator.stopAnimating()
+                self.location.text = self.defaults.string(forKey: "location")
+                self.table.reloadData()
+            }
+        }
+    }
 }
+
 
 extension UIColor{
     class func AppGreenColor()-> UIColor{
@@ -183,3 +236,5 @@ struct LegalQuery: GQLQuery {
     }
     
 }
+
+

@@ -13,12 +13,12 @@ class AccountViewController: UIViewController {
     var childViewController:ViewController! = nil
     var defaults:UserDefaults!
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "accountSegue"{
-            self.defaults = UserDefaults.standard
-            self.childViewController = segue.destination as? ViewController
-            self.childViewController.loadUrl = defaults.string(forKey: "accountUrl")!
-             self.childViewController.requestType = .url
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        print("will appear")
+        self.defaults = UserDefaults.standard
+        self.defaults.synchronize()
+        let notificationDict = ["url":self.defaults.string(forKey: "accountUrl")]
+        NotificationCenter.default.post(name: NSNotification.Name("SITE_URL"), object: nil, userInfo: notificationDict as [String : Any])
     }
+    
 }

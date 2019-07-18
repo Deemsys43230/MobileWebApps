@@ -17,38 +17,35 @@ enum requestTypeEnum:Int {
     case html = 2
 }
 
-class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNavigationDelegate,UIWebViewDelegate,UIScrollViewDelegate,BarcodeScannerCodeDelegate,BarcodeScannerErrorDelegate,BarcodeScannerDismissalDelegate {
+class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNavigationDelegate,UIWebViewDelegate,UIScrollViewDelegate,BarcodeScannerCodeDelegate,BarcodeScannerErrorDelegate,BarcodeScannerDismissalDelegate{
+    
+    
     var defaults:UserDefaults!
     var barCodeController:BarcodeScannerViewController! = nil
     var loadUrl:String?
     var requestType: requestTypeEnum!
     var navTitle:String?
-    
-    
 
     @IBOutlet weak var progress: UIProgressView!
     @IBOutlet weak var webKitView: WKWebView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-       /* self.navigationController?.navigationBar.barTintColor = UIColor(red: 47.0/255.0, green: 199.0/255.0, blue: 0.0/255.0, alpha: 1.0)
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont(name: "Avenir Next", size: 21.0)!]
-        self.navigationItem.title = "Electronics"
-        self.navigationController?.navigationBar.tintColor = .white*/
-        
-        
-        /*let shareBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Share"), style: .plain, target: self, action: #selector(Share))
-        let callBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Call"), style: .plain, target: self, action: #selector(Call))
-        let emailBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Email"), style: .plain, target: self, action: #selector(Message))
-        self.navigationItem.setRightBarButtonItems([emailBarButton,callBarButton], animated: true)
-        let scanBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "barcode"), style: .plain, target: self, action: #selector(Scan))
-        self.navigationItem.setLeftBarButtonItems([scanBarButton,shareBarButton], animated: true)*/
-       
-        
+        print("VC viewDidLoad")
+        let notification = NotificationCenter.default
+        notification.addObserver(self, selector: #selector(setValues(notification:)), name: NSNotification.Name(rawValue: "SITE_URL"), object: nil)
     }
+    
+    @objc func setValues(notification:NSNotification){
+        print(notification)
+        self.loadUrl = notification.userInfo?["url"] as? String
+        self.requestType = requestTypeEnum.url
+    }
+    
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        print("VC viewDidAppear")
         self.defaults = UserDefaults.standard
         self.webKitView.navigationDelegate = self
         self.webKitView.scrollView.delegate = self
@@ -175,6 +172,20 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
 
     func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
         controller.dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK:- Cart Delegate
+    func SetCartUrl(url: String!) {
+        print("called delegate")
+        self.loadUrl = url
+        self.requestType = .url
+    }
+    
+    //MARK:- Account Delegate
+    func SetAccountUrl(url: String!) {
+        print("called delegate")
+        self.loadUrl = url
+        self.requestType = .url
     }
     
 

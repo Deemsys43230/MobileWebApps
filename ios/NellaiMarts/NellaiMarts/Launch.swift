@@ -68,11 +68,20 @@ class Launch: UIViewController {
             if responseData.result.value != nil{
                 if let response = try? JSON(data: responseData.result.value!, options: .mutableContainers){
                     self.Indicator.stopAnimating()
-                    let dict = response.dictionaryObject as! [String:String]
-                    print(dict)
-                    let defaults = UserDefaults.standard
-                    defaults.setValuesForKeys(dict)
+                    let defaults:UserDefaults = UserDefaults.standard
+                    let locations = response.arrayObject as! [[String:String]]
+                    var dict:Dictionary! = [:]
+                    if let index = defaults.value(forKey: "index") {
+                        dict = locations[index as! Int]
+                    }else{
+                        dict = locations[0]
+                        defaults.set(0, forKey: "index")
+                    }
+                    print(dict!)
+                    defaults.setValuesForKeys(dict as! [String : Any])
+                    defaults.set(locations, forKey: "locations")
                     defaults.synchronize()
+                    print(defaults.value(forKey: "locations")!)
                     // Navigate
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let VC = storyboard.instantiateViewController(withIdentifier: "TabVC") as! TabController
