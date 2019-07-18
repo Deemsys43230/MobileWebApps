@@ -14,6 +14,58 @@
             android:background="@color/colorsplash"
             android:id="@+id/relativeLayout"
             app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:gravity="center">
+
+            <ImageView android:layout_width="20dp"
+                       android:layout_height="20dp"
+                       android:src="@drawable/ic_location_on"
+                       android:id="@+id/rateus"
+                       android:layout_marginLeft="10dp"
+                       android:scaleType="fitXY"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/location"
+                    android:text="Location"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    android:textColor="#FFFFFF"
+                    android:paddingTop="2dp"
+                    android:paddingLeft="3dp"
+                    android:paddingBottom="5dp"/>
+
+
+
+            <!--<ProgressBar-->
+                    <!--android:indeterminateTint="#FFFFFF"-->
+                    <!--android:layout_width="15dp"-->
+                    <!--android:layout_height="15dp"-->
+                    <!--android:id="@+id/progressBar"-->
+                    <!--android:layout_marginLeft="5dp"-->
+                    <!--android:layout_marginRight="5dp"/>-->
+
+        </LinearLayout>
+
+
+
+
+        <!--<ImageView android:layout_width="25dp"-->
+                   <!--android:layout_height="25dp"-->
+                   <!--android:src="@drawable/rateus"-->
+                   <!--android:id="@+id/rateus"-->
+                   <!--android:scaleType="fitXY"-->
+                   <!--android:layout_alignParentLeft="true"-->
+                   <!--android:layout_marginLeft="10dp"-->
+                   <!--android:layout_centerVertical="true"/>-->
+
         <!--<TextView-->
                 <!--android:text="Rate Us"-->
                 <!--android:layout_width="wrap_content"-->
@@ -25,40 +77,40 @@
                 <!--android:textSize="20sp"-->
                 <!--android:textStyle="normal"-->
                 <!--android:textColor="#FFFFFF"/>-->
-        <ImageView android:layout_width="30dp"
-                   android:layout_height="30dp"
-                   android:src="@drawable/ic_action_barcode_1"
-                   android:layout_marginRight="10dp"
-                   android:id="@+id/barcode"
-                   android:scaleType="fitXY"
-                   android:layout_alignParentLeft="true"
-                   android:layout_marginLeft="10dp"
-                   android:layout_centerVertical="true"/>
 
-        <ProgressBar
-                android:indeterminateTint="#FFFFFF"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/progressBar"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="50dp"
-                android:layout_centerVertical="true"/>
+
+        <!--<ImageView android:layout_width="30dp"-->
+                   <!--android:layout_height="30dp"-->
+                   <!--android:src="@drawable/ic_action_barcode_1"-->
+                   <!--android:layout_marginRight="10dp"-->
+                   <!--android:id="@+id/barcode"-->
+                   <!--android:scaleType="fitXY"-->
+                   <!--android:layout_alignParentLeft="true"-->
+                   <!--android:layout_marginLeft="10dp"-->
+                   <!--android:layout_centerVertical="true"/>-->
+
+
         <TextView
                 android:text="Nellai Marts Inc"
-                android:layout_width="wrap_content"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/title"
-                android:textSize="22sp"
+                android:textSize="19sp"
+                android:singleLine="true"
+                android:layout_gravity="center_vertical"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textStyle="normal"
                 android:textColor="#FFFFFF"/>
+
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true">
+
 
             <ImageView android:layout_width="20dp"
                        android:layout_height="20dp"
@@ -83,6 +135,14 @@
                        android:layout_marginRight="10dp"
                        android:id="@+id/share"
                        android:scaleType="fitXY"/>
+
+            <ProgressBar
+                    android:indeterminateTint="#FFFFFF"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/progressBar"
+                    android:layout_marginRight="5dp"/>
 
         </LinearLayout>
     </RelativeLayout>

@@ -14,7 +14,46 @@
             android:layout_height="50dp"
             android:background="@color/colorsplash"
             android:id="@+id/relativeLayout"
+            android:layout_centerVertical="true"
             app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_centerVertical="true"
+                android:gravity="center">
+
+            <ImageView android:layout_width="20dp"
+                       android:layout_height="20dp"
+                       android:src="@drawable/ic_location_on"
+                       android:id="@+id/rateus"
+                       android:layout_marginLeft="10dp"
+                       android:scaleType="fitXY"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/location"
+                    android:text="Location"
+                    android:textSize="20sp"
+                    android:textStyle="normal"
+                    android:textColor="#FFFFFF"
+                    android:paddingTop="2dp"
+                    android:paddingLeft="3dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginRight="15dp"/>
+
+            <!--<ProgressBar-->
+                    <!--android:indeterminateTint="#FFFFFF"-->
+                    <!--android:layout_width="20dp"-->
+                    <!--android:layout_height="20dp"-->
+                    <!--android:id="@+id/progressBar"/>-->
+
+        </LinearLayout>
+
+
+
         <!--<TextView-->
                 <!--android:text="Rate Us"-->
                 <!--android:layout_width="wrap_content"-->
@@ -26,24 +65,26 @@
                 <!--android:textSize="20sp"-->
                 <!--android:textStyle="normal"-->
                 <!--android:textColor="#FFFFFF"/>-->
-        <ImageView android:layout_width="30dp"
-                   android:layout_height="30dp"
-                   android:src="@drawable/ic_action_barcode_1"
-                   android:layout_marginRight="10dp"
-                   android:id="@+id/barcode"
-                   android:scaleType="fitXY"
-                   android:layout_centerVertical="true"
-                   android:layout_alignParentLeft="true"
-                   android:layout_marginLeft="10dp"/>
 
-        <ProgressBar
-                android:indeterminateTint="#FFFFFF"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/progressBar"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="50dp"/>
+        <!--<ImageView android:layout_width="30dp"-->
+                   <!--android:layout_height="30dp"-->
+                   <!--android:src="@drawable/ic_action_barcode_1"-->
+                   <!--android:layout_marginRight="10dp"-->
+                   <!--android:id="@+id/barcode"-->
+                   <!--android:scaleType="fitXY"-->
+                   <!--android:layout_centerVertical="true"-->
+                   <!--android:layout_alignParentLeft="true"-->
+                   <!--android:layout_marginLeft="10dp"/>-->
+
+        <!--<ProgressBar-->
+                <!--android:indeterminateTint="#FFFFFF"-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:id="@+id/progressBar"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:paddingLeft="5dp"-->
+                <!--android:layout_marginLeft="150dp"/>-->
         <TextView
                 android:text="Nellai Marts Inc"
                 android:layout_width="wrap_content"
@@ -81,6 +122,14 @@
                        android:layout_marginRight="15dp"
                        android:id="@+id/share"
                        android:scaleType="fitXY"/>
+
+            <ProgressBar
+                    android:indeterminateTint="#FFFFFF"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:id="@+id/progressBar"
+                    android:layout_marginRight="15dp"/>
+
 
         </LinearLayout>
     </RelativeLayout>

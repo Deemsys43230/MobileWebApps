@@ -1,7 +1,6 @@
 package com.deemsysinc.nellaimarts
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -13,18 +12,19 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.telephony.TelephonyManager
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import com.deemsysinc.nellaimarts.Utils.ScanActivity
 import com.deemsysinc.nellaimarts.Utils.utilityClass
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStream
@@ -32,15 +32,32 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.system.exitProcess
+import kotlin.collections.ArrayList as ArrayList1
 
-class homeActivity : AppCompatActivity() {
+class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListener {
+    override fun clickOnItem(index:Int) {
+        var convertString:String=this.locations.get(index).toString()
+        jsonobject = JSONObject(convertString)
+        location.setText(jsonobject.getString("location"))
+        customDialog?.dismiss()
+        webview.loadUrl(jsonobject.getString("websiteUrl"))
+        val editor: SharedPreferences.Editor = sharedPreference.edit()
+        editor.putString("Selectedlocation",convertString)
+        editor.commit()
+    }
 
-    lateinit var barcode: ImageView
+
+    internal var customDialog: CustomListViewDialog? = null
+
+//    lateinit var barcode: ImageView
+//    lateinit var rateus: ImageView
     lateinit var call: ImageView
     lateinit var email: ImageView
     lateinit var share: ImageView
     lateinit var webview: WebView
 //    lateinit var rateus: TextView
+    lateinit var location:TextView
+    lateinit var cancel:ImageView
     lateinit var  progressBar: ProgressBar
     lateinit var  barcodeProgressBar: ProgressBar
     lateinit var sharedPreference: SharedPreferences
@@ -56,10 +73,14 @@ class homeActivity : AppCompatActivity() {
      var producturl:String=""
 
 
+    lateinit var locations:MutableList<Any>
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
         statusUtility= utilityClass(this)
         statusUtility.StatusBarColor()
 
@@ -73,20 +94,44 @@ class homeActivity : AppCompatActivity() {
         share = findViewById(R.id.share)
         webview = findViewById(R.id.webview)
 //        rateus = findViewById(R.id.rateus)
-        barcode = findViewById(R.id.barcode)
+//        barcode = findViewById(R.id.barcode)
+        location = findViewById(R.id.location)
         barcodeProgressBar = findViewById(R.id.progressBar)
         progressBar = findViewById(R.id.progressBar2)
         progressBar.setVisibility(View.GONE)
         barcodeProgressBar.visibility = View.GONE
         telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
-        CheckPerrmissions()
-
+//        CheckPerrmissions()
 
         sharedPreference= PreferenceManager.getDefaultSharedPreferences(this)
 
-        var getvalue = sharedPreference.getString("NellaiMartDetails","")
-        jsonobject = JSONObject(getvalue)
+
+
+
+
+//        var items = sharedPreference.getString("LocationList","")
+//        var locationArray:JSONArray;
+//        locationArray= JSONArray(items)
+//        locations= mutableListOf<Any>()
+//        Log.d("LocArrLength",""+locationArray.length())
+//        for(k in 0..locationArray.length()-1){
+//
+//            var jsonObject:JSONObject
+//            jsonObject=locationArray.getJSONObject(k)
+//            locations.add(jsonObject)
+//        }
+
+        if(sharedPreference.contains("Selectedlocation")){
+            Log.d("Selectedlocations",""+sharedPreference.getString("Selectedlocation",""))
+            jsonobject = JSONObject(sharedPreference.getString("Selectedlocation",""))
+            location.setText(jsonobject.getString("location"))
+        }else{
+            var getvalue = sharedPreference.getString("NellaiMartDetails","")
+            jsonobject = JSONObject(getvalue)
+            location.setText(jsonobject.getString("location"))
+        }
+
 
 
 //        webview.getSettings().setBuiltInZoomControls(true)
@@ -154,14 +199,21 @@ class homeActivity : AppCompatActivity() {
 
         }
 
-        barcode.setOnClickListener {
-            if(isCameraPermissionEnabled){
-                navigation()
-            }
-           else{
-                CameraPermission()
-            }
+        location.setOnClickListener {
+//            Toast.makeText(this,"location",Toast.LENGTH_SHORT).show()
+            clickHere()
         }
+
+
+
+//        barcode.setOnClickListener {
+//            if(isCameraPermissionEnabled){
+//                navigation()
+//            }
+//           else{
+//                CameraPermission()
+//            }
+//        }
 
 //        rateus.setOnClickListener {
 //            var androidRateusUrl:String = jsonobject.getString("androidRateusUrl")
@@ -186,6 +238,35 @@ class homeActivity : AppCompatActivity() {
                 startActivity(Intent.createChooser(shareIntent,share+" "+androidRateusUrl))
             }
         }
+    }
+
+    fun clickHere() {
+
+        locations= mutableListOf<Any>()
+
+        var items = sharedPreference.getString("LocationList","")
+        var locationArray:JSONArray;
+        locationArray= JSONArray(items)
+
+        for(k in 0..locationArray.length()-1){
+
+            var jsonObject:JSONObject
+            jsonObject=locationArray.getJSONObject(k)
+            locations.add(jsonObject)
+        }
+
+        val dataAdapter = DataAdapter(locations,this)
+
+        customDialog = CustomListViewDialog(this@homeActivity, dataAdapter)
+
+
+
+
+        //if we know that the particular variable not null any time ,we can assign !! (not null operator ), then  it won't check for null, if it becomes null, it willthrow exception
+        customDialog!!.show()
+        customDialog!!.setCanceledOnTouchOutside(false)
+
+
     }
 
     private fun LoadProduct() {
@@ -216,12 +297,12 @@ class homeActivity : AppCompatActivity() {
 
     }
 
-    fun CheckPerrmissions(){
-
-        ActivityCompat.requestPermissions(this as Activity,
-            arrayOf(Manifest.permission.CAMERA, Manifest.permission.CALL_PHONE),
-            3)
-    }
+//    fun CheckPerrmissions(){
+//
+//        ActivityCompat.requestPermissions(this as Activity,
+//            arrayOf(Manifest.permission.CAMERA, Manifest.permission.CALL_PHONE),
+//            3)
+//    }
 
     fun CallPermission(){
         if (ActivityCompat.checkSelfPermission(this@homeActivity,
@@ -232,14 +313,14 @@ class homeActivity : AppCompatActivity() {
             }
     }
 
-    fun CameraPermission(){
-
-        if (ActivityCompat.checkSelfPermission(this@homeActivity,
-                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-        {
-            makeRequest(2)
-        }
-    }
+//    fun CameraPermission(){
+//
+//        if (ActivityCompat.checkSelfPermission(this@homeActivity,
+//                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+//        {
+//            makeRequest(2)
+//        }
+//    }
 
 
 
@@ -332,14 +413,15 @@ class homeActivity : AppCompatActivity() {
         moveTaskToBack(true)
         exitProcess(-1)
     }
+
     private fun makeRequest(permissonFor:Int) {
         when(permissonFor) {
             1->        ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.CALL_PHONE),
                 1)
-            2->ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.CAMERA),
-                2)
+//            2->ActivityCompat.requestPermissions(this,
+//                arrayOf(Manifest.permission.CAMERA),
+//                2)
         }
 
 
@@ -349,9 +431,9 @@ class homeActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 //        Toast.makeText(this,""+permissions.size,Toast.LENGTH_LONG).show()
         if(requestCode == 3){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                isCameraPermissionEnabled = true
-            }
+//            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+//                isCameraPermissionEnabled = true
+//            }
             if(grantResults[1] == PackageManager.PERMISSION_GRANTED){
                 isCallPermissionEnabled = true
             }
@@ -363,12 +445,12 @@ class homeActivity : AppCompatActivity() {
                 //isCallPermissionEnabled = true
             }
         }
-        if(requestCode == 2){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                navigation()
-                //isCameraPermissionEnabled = true
-            }
-        }
+//        if(requestCode == 2){
+//            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+//                navigation()
+//                //isCameraPermissionEnabled = true
+//            }
+//        }
 
     }
 

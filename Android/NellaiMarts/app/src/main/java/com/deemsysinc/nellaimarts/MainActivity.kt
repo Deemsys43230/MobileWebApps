@@ -21,7 +21,10 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import android.support.design.widget.Snackbar
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_home.*
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 @Suppress("DEPRECATION")
@@ -32,7 +35,7 @@ class MainActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityRecei
 
     lateinit var progressBar: ProgressBar
     lateinit var sharedPreference: SharedPreferences
-    val url = URL("https://s3.amazonaws.com/mobilewebapps/nellaimarts.json")
+    val url = URL("https://s3.amazonaws.com/mobilewebapps/nellaimart.json")
 //    val url = URL("https://s3.amazonaws.com/mobilewebapps/shoppickk.json")
 
 
@@ -89,10 +92,22 @@ class MainActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityRecei
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
+
+            var resArray=JSONArray(result)
+            Log.d("ResponseResult",""+ resArray[0])
             progressBar.visibility = View.GONE
             loading.visibility = View.GONE
             val editor: SharedPreferences.Editor = sharedPreference.edit()
-            editor.putString("NellaiMartDetails", result)
+            editor.commit()
+            editor.putString("NellaiMartDetails", resArray[0].toString())
+//             for(k in 0..resArray.length()-1)
+//             {
+//                 var jsonObject:JSONObject
+//                 jsonObject=resArray.getJSONObject(k)
+//                 Log.d("PrintResult",""+jsonObject.getString("location"))
+//                 items.add(jsonObject.getString("location"))
+//             }
+            editor.putString("LocationList",result)
             editor.commit()
             val intent = Intent(this@MainActivity, homeActivity::class.java)
             startActivity(intent)
@@ -102,8 +117,6 @@ class MainActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityRecei
         override fun doInBackground(vararg params: URL?): String {
 
             val connect = params[0]?.openConnection() as HttpURLConnection
-            connect.readTimeout = 8000
-            connect.connectTimeout = 8000
             connect.requestMethod = "GET"
             connect.connect()
 
