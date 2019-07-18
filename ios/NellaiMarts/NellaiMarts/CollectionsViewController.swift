@@ -103,6 +103,7 @@ class CollectionsViewController: UIViewController,NVActivityIndicatorViewable,UI
         let VC = storyboard.instantiateViewController(withIdentifier: "main") as! ViewController
         VC.loadUrl = "\(defaults.string(forKey: "domain")!)/collections/\(self.collectionData[indexPath.row].handle!)"
         VC.requestType = .url
+        VC.fromSource = "CollectionsList"
         self.navigationController?.pushViewController(VC, animated: true)
     }
     

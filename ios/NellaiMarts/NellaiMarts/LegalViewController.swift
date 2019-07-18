@@ -195,6 +195,7 @@ class LegalViewController: UITableViewController,UITabBarControllerDelegate,MFMa
                 self.defaults.set("\(primaryDomain["url"] as! String)/cart", forKey: "cartUrl")
                 self.defaults.set(primaryDomain["url"] as! String, forKey: "domain")
                 self.defaults.set("\(primaryDomain["url"] as! String)/account", forKey: "accountUrl")
+                self.defaults.set(primaryDomain["url"] as! String, forKey: "collectionUrl")
 //                print(UserDefaults.standard.dictionaryRepresentation().values)
                 self.defaults.synchronize()
             }

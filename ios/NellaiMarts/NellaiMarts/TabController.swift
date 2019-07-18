@@ -66,6 +66,19 @@ class TabController:UITabBarController,UITabBarControllerDelegate{
         }
     }
     
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        
+        if item.title == "Shop"{
+            let defaults = UserDefaults.standard
+            guard (defaults.value(forKey: "collectionUrl") != nil) else {
+                return
+            }
+            let notificationDict = ["url":defaults.string(forKey: "collectionUrl")]
+            NotificationCenter.default.post(name: NSNotification.Name("SITE_URL"), object: nil, userInfo: notificationDict as [String : Any])
+        }
+        
+    }
+    
     
 }
 

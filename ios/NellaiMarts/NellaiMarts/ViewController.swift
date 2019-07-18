@@ -25,6 +25,7 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
     var loadUrl:String?
     var requestType: requestTypeEnum!
     var navTitle:String?
+    var fromSource:String?
 
     @IBOutlet weak var progress: UIProgressView!
     @IBOutlet weak var webKitView: WKWebView!
@@ -33,6 +34,10 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         print("VC viewDidLoad")
         let notification = NotificationCenter.default
         notification.addObserver(self, selector: #selector(setValues(notification:)), name: NSNotification.Name(rawValue: "SITE_URL"), object: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        self.fromSource = nil
     }
     
     @objc func setValues(notification:NSNotification){
@@ -151,6 +156,10 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         let reachability = Reachability()!
         if reachability.connection != .none{
             decisionHandler(.allow)
+            if self.fromSource == "CollectionsList"{
+                self.defaults.set(webView.url?.absoluteString, forKey: "collectionUrl")
+                self.defaults.synchronize()
+            }
             return
         }
         self.displayNetworkAlert()
