@@ -107,9 +107,6 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
         sharedPreference= PreferenceManager.getDefaultSharedPreferences(this)
 
 
-
-
-
 //        var items = sharedPreference.getString("LocationList","")
 //        var locationArray:JSONArray;
 //        locationArray= JSONArray(items)
@@ -126,6 +123,9 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
             Log.d("Selectedlocations",""+sharedPreference.getString("Selectedlocation",""))
             jsonobject = JSONObject(sharedPreference.getString("Selectedlocation",""))
             location.setText(jsonobject.getString("location"))
+
+            SelectedLocation()
+
         }else{
             var getvalue = sharedPreference.getString("NellaiMartDetails","")
             jsonobject = JSONObject(getvalue)
@@ -245,7 +245,7 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
         locations= mutableListOf<Any>()
 
         var items = sharedPreference.getString("LocationList","")
-        var locationArray:JSONArray;
+        var locationArray:JSONArray
         locationArray= JSONArray(items)
 
         for(k in 0..locationArray.length()-1){
@@ -322,6 +322,24 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 //        }
 //    }
 
+
+    fun SelectedLocation(){
+
+        var jsonobject:JSONObject= JSONObject(sharedPreference.getString("Selectedlocation",""))
+        var jsonArray:JSONArray= JSONArray(sharedPreference.getString("LocationList",""))
+        for(i in 0..jsonArray.length()-1)
+        {
+            var getObject:JSONObject=jsonArray.getJSONObject(i)
+            if(jsonobject.getString("location").equals(getObject.getString("location")))
+            {
+                val editor: SharedPreferences.Editor = sharedPreference.edit()
+                editor.putString("Selectedlocation", getObject.toString())
+                editor.commit()
+            }
+        }
+
+        Log.d("SelectedLocationnnn",""+JSONObject(sharedPreference.getString("Selectedlocation","")))
+    }
 
 
     fun isAppInstalledOrNot(context: Context, applicationId: String): Boolean {

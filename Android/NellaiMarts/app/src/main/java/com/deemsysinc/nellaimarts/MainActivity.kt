@@ -100,13 +100,6 @@ class MainActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityRecei
             val editor: SharedPreferences.Editor = sharedPreference.edit()
             editor.commit()
             editor.putString("NellaiMartDetails", resArray[0].toString())
-//             for(k in 0..resArray.length()-1)
-//             {
-//                 var jsonObject:JSONObject
-//                 jsonObject=resArray.getJSONObject(k)
-//                 Log.d("PrintResult",""+jsonObject.getString("location"))
-//                 items.add(jsonObject.getString("location"))
-//             }
             editor.putString("LocationList",result)
             editor.commit()
             val intent = Intent(this@MainActivity, homeActivity::class.java)
@@ -129,6 +122,8 @@ class MainActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityRecei
         }
 
     }
+
+
 
     fun streamToString(inputStream: InputStream): String {
 
