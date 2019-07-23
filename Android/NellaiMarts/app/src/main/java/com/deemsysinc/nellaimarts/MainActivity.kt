@@ -35,8 +35,9 @@ class MainActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityRecei
 
     lateinit var progressBar: ProgressBar
     lateinit var sharedPreference: SharedPreferences
-    val url = URL("https://s3.amazonaws.com/mobilewebapps/nellaimart.json")
+//    val url = URL("https://s3.amazonaws.com/mobilewebapps/nellaimart.json")
 //    val url = URL("https://s3.amazonaws.com/mobilewebapps/shoppickk.json")
+    val url = URL("https://s3.amazonaws.com/mobilewebapps/nellaimart1.json")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,6 +101,22 @@ class MainActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityRecei
             val editor: SharedPreferences.Editor = sharedPreference.edit()
             editor.commit()
             editor.putString("NellaiMartDetails", resArray[0].toString())
+            var arrayList:MutableList<Any> = mutableListOf<Any>()
+
+//            For Local test
+
+//            for(i in 0..resArray.length()-1){
+//
+//                var jsonObject:JSONObject
+//                jsonObject=resArray.getJSONObject(i)
+//                jsonObject.put("location","San Franciscooo")
+//                arrayList.add(jsonObject)
+//            }
+//
+//            editor.putString("LocationList",arrayList.toString())
+//            editor.commit()
+//            Log.d("LocalTest:",""+arrayList.toString())
+
             editor.putString("LocationList",result)
             editor.commit()
             val intent = Intent(this@MainActivity, homeActivity::class.java)

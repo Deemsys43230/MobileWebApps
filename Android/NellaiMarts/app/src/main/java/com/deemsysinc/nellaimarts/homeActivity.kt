@@ -123,7 +123,6 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
             Log.d("Selectedlocations",""+sharedPreference.getString("Selectedlocation",""))
             jsonobject = JSONObject(sharedPreference.getString("Selectedlocation",""))
             location.setText(jsonobject.getString("location"))
-
             SelectedLocation()
 
         }else{

@@ -21,28 +21,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_centerVertical="true"
-                android:gravity="center">
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
 
-            <ImageView android:layout_width="20dp"
-                       android:layout_height="20dp"
+            <ImageView android:layout_width="22dp"
+                       android:layout_height="22dp"
+                       android:layout_gravity="center_vertical"
                        android:src="@drawable/ic_location_on"
                        android:id="@+id/rateus"
-                       android:layout_marginLeft="10dp"
                        android:scaleType="fitXY"/>
 
 
             <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:text="Location"
+                    android:singleLine="true"
                     android:id="@+id/location"
                     android:textSize="18sp"
                     android:textStyle="normal"
                     android:textColor="#FFFFFF"
-                    android:paddingTop="2dp"
-                    android:paddingLeft="3dp"
-                    android:paddingBottom="5dp"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginLeft="3dp"/>
 
 
             <!--<ProgressBar-->
@@ -99,11 +100,12 @@
                 <!--android:layout_centerVertical="true"/>-->
 
         <TextView
-                android:text="Nellai Marts Inc"
+                android:text="Nellai Marts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/title"
                 android:textSize="24sp"
+                android:singleLine="true"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
@@ -138,7 +140,7 @@
                        android:scaleType="fitXY"/>
 
             <ProgressBar
-                    android:indeterminateTint="#FFFFFF"
+                    android:indeterminateTint="@color/white"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:id="@+id/progressBar"
