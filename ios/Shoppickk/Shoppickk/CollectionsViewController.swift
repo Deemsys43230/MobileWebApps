@@ -125,6 +125,7 @@ class CollectionsViewController: UIViewController,NVActivityIndicatorViewable,UI
             return cell
         }
         cell.collectionTitle.text = self.collectionData[indexPath.row].collectionTitle
+        cell.collectionImage.image = #imageLiteral(resourceName: "placeholder")
         guard self.collectionData[indexPath.row].collectionImage.count>0 else {
             return cell
         }

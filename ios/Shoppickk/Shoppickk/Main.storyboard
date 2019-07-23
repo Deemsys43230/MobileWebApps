@@ -511,7 +511,7 @@
     </scenes>
     <resources>
         <image name="cart" width="16" height="16"/>
-        <image name="placeholder" width="270" height="270"/>
+        <image name="placeholder" width="1024" height="1024"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="dlf-Fl-jcT"/>
