@@ -10,18 +10,16 @@ import UIKit
 import MessageUI
 import WebKit
 import Reachability
-import BarcodeScanner
 
 enum requestTypeEnum:Int {
     case url = 1
     case html = 2
 }
 
-class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNavigationDelegate,UIWebViewDelegate,UIScrollViewDelegate,BarcodeScannerCodeDelegate,BarcodeScannerErrorDelegate,BarcodeScannerDismissalDelegate{
+class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNavigationDelegate,UIWebViewDelegate,UIScrollViewDelegate{
     
     
     var defaults:UserDefaults!
-    var barCodeController:BarcodeScannerViewController! = nil
     var loadUrl:String?
     var requestType: requestTypeEnum!
     var navTitle:String?
@@ -116,24 +114,7 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         let activityController = UIActivityViewController(activityItems: [shareContent], applicationActivities: [])
         self.present(activityController, animated: true, completion: nil)
     }
-    /*
-    @objc func Rate(){
-        if let url = NSURL(string: defaults.string(forKey: "iosRateusUrl")!), UIApplication.shared.canOpenURL(url as URL) {
-            UIApplication.shared.open(url as URL)
-        }
-    }*/
-    
-    @objc func Scan(){
-        // Bar code scanning
-        self.barCodeController = BarcodeScannerViewController()
-        barCodeController.codeDelegate = self
-        barCodeController.errorDelegate = self
-        barCodeController.dismissalDelegate = self
-        self.barCodeController.title = "Scan barcode"
-        self.navigationController?.present(barCodeController, animated: true, completion: nil)
-        
-    }
-    
+
     func displayNetworkAlert() {
         let alertController = UIAlertController(title: "No Internet ☹", message: "Please check your internet connection.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
@@ -164,23 +145,6 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         }
         self.displayNetworkAlert()
         decisionHandler(.cancel)
-    }
-    
-    // MARK: - Scanner Delegates
-    func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        print(code)
-        // Process bar code and fetch the handle
-        controller.reset()
-        controller.dismiss(animated: true, completion: nil)
-        // Load the webview with handle url
-    }
-
-    func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
-         print(error)
-    }
-
-    func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
-        controller.dismiss(animated: true, completion: nil)
     }
     
     //MARK:- Cart Delegate
