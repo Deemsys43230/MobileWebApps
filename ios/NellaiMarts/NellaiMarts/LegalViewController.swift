@@ -130,6 +130,10 @@ class LegalViewController: UITableViewController,UITabBarControllerDelegate,MFMa
             default:
                 let shareContent = "\(defaults.string(forKey: "share")!) \(" ") \(self.defaults.string(forKey: "iosRateusUrl")!)"
                 let activityController = UIActivityViewController(activityItems: [shareContent], applicationActivities: [])
+                if let popOver = activityController.popoverPresentationController{
+                    popOver.sourceView = tableView
+                    popOver.sourceRect = tableView.footerView(forSection: 1)!.frame
+                }
                 self.present(activityController, animated: true, completion: nil)
                 break;
                 
@@ -167,10 +171,9 @@ class LegalViewController: UITableViewController,UITabBarControllerDelegate,MFMa
                 }
                 storeOptions.addAction(action)
             }
-            let cell = tableView.dequeueReusableCell(withIdentifier: "locationCell")
             if let popOver = storeOptions.popoverPresentationController{
-                popOver.sourceView = cell?.contentView
-                popOver.sourceRect = tableView.headerView(forSection: 0)!.frame
+                popOver.sourceView = tableView
+                popOver.sourceRect = tableView.footerView(forSection: 0)!.frame
             }
             self.present(storeOptions, animated: true, completion: nil)
             
