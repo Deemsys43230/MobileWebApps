@@ -8,7 +8,6 @@ target 'Shoppickk' do
   pod 'ReachabilitySwift'
   pod 'Alamofire'
   pod 'SwiftyJSON'
-  pod 'BarcodeScanner'
   pod 'GraphQL-Swift'
   pod 'NVActivityIndicatorView'
 
