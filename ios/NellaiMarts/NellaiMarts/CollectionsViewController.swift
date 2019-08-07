@@ -75,6 +75,9 @@ class CollectionsViewController: UIViewController,NVActivityIndicatorViewable,UI
                         }
                      self.collectionData.append(Collections(collectionTitle: title, collectionImage: image, handle: handle))
                     }
+                    self.collectionData.sort{
+                        $0.collectionTitle < $1.collectionTitle
+                    }
                 }
                 DispatchQueue.main.async {
                     self.indicator.stopAnimating()
