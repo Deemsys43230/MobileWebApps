@@ -11,7 +11,7 @@
 
     <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="80dp"
             android:background="@color/colorsplash"
             android:id="@+id/relativeLayout"
             android:layout_centerVertical="true"
@@ -140,7 +140,7 @@
             android:layout_height="match_parent"
             tools:layout_editor_absoluteX="8dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="50dp"/>
+            android:layout_marginTop="80dp"/>
     <ProgressBar
             android:indeterminateTint="@color/colorsplash"
             android:layout_width="wrap_content"

@@ -111,13 +111,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true">
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp">
 
 
             <ImageView android:layout_width="20dp"
                        android:layout_height="20dp"
                        android:src="@drawable/call"
-                       android:layout_marginTop="3dp"
                        android:layout_marginRight="10dp"
                        android:id="@+id/call"
                        android:scaleType="fitXY"/>
@@ -126,13 +126,11 @@
                        android:layout_height="20dp"
                        android:src="@drawable/mail"
                        android:id="@+id/email"
-                       android:layout_marginTop="3dp"
                        android:layout_marginRight="10dp"
                        android:scaleType="fitXY"/>
 
             <ImageView android:layout_width="20dp"
                        android:layout_height="20dp"
-                       android:layout_marginTop="3dp"
                        android:src="@drawable/icons8_share_filled_90"
                        android:layout_marginRight="10dp"
                        android:id="@+id/share"
@@ -142,7 +140,6 @@
                     android:indeterminateTint="@color/white"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginTop="3dp"
                     android:id="@+id/progressBar"
                     android:layout_marginRight="5dp"/>
 
