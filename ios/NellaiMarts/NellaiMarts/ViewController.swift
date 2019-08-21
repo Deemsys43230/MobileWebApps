@@ -17,6 +17,7 @@ enum requestTypeEnum:Int {
     case html = 2
 }
 
+
 class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNavigationDelegate,UIWebViewDelegate,UIScrollViewDelegate,BarcodeScannerCodeDelegate,BarcodeScannerErrorDelegate,BarcodeScannerDismissalDelegate{
     
     
@@ -26,18 +27,27 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
     var requestType: requestTypeEnum!
     var navTitle:String?
     var fromSource:String?
+    
+    let script = "var style = document.createElement('style'); style.innerHTML = 'body { font-family: Arial; font-size: 15px; color: black; }'; document.getElementsByTagName('head')[0].appendChild(style);var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport' ); meta.setAttribute( 'content', 'width = device-width, initial-scale = 0.0 user-scalable = no' ); document.getElementsByTagName('head')[0].appendChild(meta);"
+    
+    //let cssStartingString = "<html><head><style>body{color: black;font-family: Arial;font-size: 30px;}</head><body>"
+    let cssStartingString = "<html><head></head><body>"
+    let cssClosingString = "</body></html>"
 
     @IBOutlet weak var progress: UIProgressView!
     @IBOutlet weak var webKitView: WKWebView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("VC viewDidLoad")
+        webKitView.scrollView.delegate = self
         let notification = NotificationCenter.default
         notification.addObserver(self, selector: #selector(setValues(notification:)), name: NSNotification.Name(rawValue: "SITE_URL"), object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         self.fromSource = nil
+        webKitView.scrollView.delegate = nil
     }
     
     @objc func setValues(notification:NSNotification){
@@ -67,6 +77,8 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         switch requestType.rawValue {
         case requestTypeEnum.html.rawValue:
             if let html = self.loadUrl{
+                let composedString = "\(self.cssStartingString)\(html)\(self.cssClosingString)"
+                print(composedString)
                 webKitView.loadHTMLString(html, baseURL: nil)
             }
             self.setupNavBar()
@@ -166,6 +178,20 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         decisionHandler(.cancel)
     }
     
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        if requestType == requestTypeEnum.html{
+            webView.evaluateJavaScript(script, completionHandler: nil)
+        }
+    }
+    
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        if requestType == requestTypeEnum.html{
+            webView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+        }
+    }
+    
+    
+    
     // MARK: - Scanner Delegates
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
         print(code)
@@ -197,6 +223,12 @@ class ViewController: UIViewController,MFMailComposeViewControllerDelegate, WKNa
         self.requestType = .url
     }
     
+    //MARK:- ScrollView Delegate
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        if requestType == requestTypeEnum.url{
+            scrollView.setZoomScale(1.0, animated: false)
+        }
+    }
 
 }
 
