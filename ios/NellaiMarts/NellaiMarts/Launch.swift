@@ -69,23 +69,44 @@ class Launch: UIViewController {
                 if let response = try? JSON(data: responseData.result.value!, options: .mutableContainers){
                     self.Indicator.stopAnimating()
                     let defaults:UserDefaults = UserDefaults.standard
-                    let locations = response.arrayObject as! [[String:String]]
-                    var dict:Dictionary! = [:]
-                    if let index = defaults.value(forKey: "index") {
-                        dict = locations[index as! Int]
+                    let sourceData = response.dictionaryObject
+                    // From Odoo
+                    if sourceData!["source"] as! String == "odoo"{
+                        print("From Odoo")
+                        let locations = sourceData!["odoo"] as! [[String:String]]
+                        var dict:Dictionary! = [:]
+                        if let index = defaults.value(forKey: "index") {
+                            dict = locations[index as! Int]
+                        }else{
+                            dict = locations[0]
+                            defaults.set(0, forKey: "index")
+                        }
+                        print(dict!)
+                        defaults.setValuesForKeys(dict as! [String : Any])
+                        defaults.set(locations, forKey: "locations")
+                        defaults.synchronize()
+                        print(defaults.value(forKey: "locations")!)
+                        //navigate to odoo webpage
                     }else{
-                        dict = locations[0]
-                        defaults.set(0, forKey: "index")
+                        // From Shopify
+                        let locations = sourceData!["shopify"] as! [[String:String]]
+                        var dict:Dictionary! = [:]
+                        if let index = defaults.value(forKey: "index") {
+                            dict = locations[index as! Int]
+                        }else{
+                            dict = locations[0]
+                            defaults.set(0, forKey: "index")
+                        }
+                        print(dict!)
+                        defaults.setValuesForKeys(dict as! [String : Any])
+                        defaults.set(locations, forKey: "locations")
+                        defaults.synchronize()
+                        print(defaults.value(forKey: "locations")!)
+                        // Navigate to shopify webpage
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let VC = storyboard.instantiateViewController(withIdentifier: "TabVC") as! TabController
+                        self.present(VC, animated: true, completion: nil)
                     }
-                    print(dict!)
-                    defaults.setValuesForKeys(dict as! [String : Any])
-                    defaults.set(locations, forKey: "locations")
-                    defaults.synchronize()
-                    print(defaults.value(forKey: "locations")!)
-                    // Navigate
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let VC = storyboard.instantiateViewController(withIdentifier: "TabVC") as! TabController
-                    self.present(VC, animated: true, completion: nil)
                 }
             }
         }
