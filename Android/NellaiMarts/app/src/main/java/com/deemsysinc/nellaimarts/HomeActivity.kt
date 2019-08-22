@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.telephony.TelephonyManager
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.webkit.WebView
@@ -21,7 +20,6 @@ import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import com.deemsysinc.nellaimarts.Utils.ScanActivity
 import com.deemsysinc.nellaimarts.Utils.utilityClass
 import org.json.JSONArray
@@ -34,7 +32,7 @@ import java.net.URL
 import kotlin.system.exitProcess
 import kotlin.collections.ArrayList as ArrayList1
 
-class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListener {
+class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListener {
     override fun clickOnItem(index:Int) {
         var convertString:String=this.locations.get(index).toString()
         jsonobject = JSONObject(convertString)
@@ -42,6 +40,7 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
         customDialog?.dismiss()
         webview.loadUrl(jsonobject.getString("websiteUrl"))
         val editor: SharedPreferences.Editor = sharedPreference.edit()
+        Log.d("SelectedLoc:",""+convertString)
         editor.putString("Selectedlocation",convertString)
         editor.commit()
     }
@@ -49,13 +48,16 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 
     internal var customDialog: CustomListViewDialog? = null
 
+//    Commented by Monica.A(22/08/2019) Removed actionbar
+
 //    lateinit var barcode: ImageView
 //    lateinit var rateus: ImageView
-    lateinit var call: ImageView
-    lateinit var email: ImageView
-    lateinit var share: ImageView
-    lateinit var webview: WebView
+//    lateinit var call: ImageView
+//    lateinit var email: ImageView
+//    lateinit var share: ImageView
 //    lateinit var rateus: TextView
+
+    lateinit var webview: WebView
     lateinit var location:TextView
     lateinit var cancel:ImageView
     lateinit var  progressBar: ProgressBar
@@ -89,12 +91,13 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
            producturl = intent.getStringExtra("BarCode")
         }
 
-        call = findViewById(R.id.call)
-        email = findViewById(R.id.email)
-        share = findViewById(R.id.share)
-        webview = findViewById(R.id.webview)
+//        call = findViewById(R.id.call)
+//        email = findViewById(R.id.email)
+//        share = findViewById(R.id.share)
 //        rateus = findViewById(R.id.rateus)
 //        barcode = findViewById(R.id.barcode)
+
+        webview = findViewById(R.id.webview)
         location = findViewById(R.id.location)
         barcodeProgressBar = findViewById(R.id.progressBar)
         progressBar = findViewById(R.id.progressBar2)
@@ -104,7 +107,7 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 
 //        CheckPerrmissions()
 
-        sharedPreference= PreferenceManager.getDefaultSharedPreferences(this)
+        sharedPreference = PreferenceManager.getDefaultSharedPreferences(this)
 
 
 //        var items = sharedPreference.getString("LocationList","")
@@ -126,8 +129,12 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
             SelectedLocation()
 
         }else{
-            var getvalue = sharedPreference.getString("NellaiMartDetails","")
-            jsonobject = JSONObject(getvalue)
+            var getvalue = sharedPreference.getString("LocationList","")
+            var resArray=JSONArray(getvalue)
+            Log.d("LocationResult",""+ resArray[0])
+            var convertString:String = resArray[0].toString()
+            jsonobject=JSONObject(convertString)
+            //jsonobject = JSONObject(resArray[0])
             location.setText(jsonobject.getString("location"))
         }
 
@@ -144,13 +151,15 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 
         webview.setWebViewClient(object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                barcodeProgressBar.visibility = View.VISIBLE
+//                barcodeProgressBar.visibility = View.VISIBLE
+//                progressBar.setVisibility(View.VISIBLE)
                 view.loadUrl(url)
                 return true
             }
 
             override fun onPageFinished(view: WebView, url: String) {
-                barcodeProgressBar.setVisibility(View.GONE)
+//                barcodeProgressBar.setVisibility(View.GONE)
+//                progressBar.setVisibility(View.GONE)
             }
         })
 
@@ -163,44 +172,44 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
         }
 
 
-        call.setOnClickListener {
-
-            if(telephonyManager.phoneType != TelephonyManager.PHONE_TYPE_NONE){
-                if(isCallPermissionEnabled){
-                    callIntent(jsonobject)
-                }
-                else{
-                    CallPermission()
-                }
-            }
-            else{
-              Toast.makeText(this,"No Sim available",Toast.LENGTH_SHORT).show()
-            }
-
-        }
-
-        email.setOnClickListener {
-
-            isAppInstalledOrNot(this,"com.google.android.gm")
-            if(isAppInstalledOrNot(this,"com.google.android.gm") == true){
-            val intent = Intent(Intent.ACTION_SENDTO)
-            var Email:String = jsonobject.getString("mail")
-            Log.d("Email",""+Email)
-            intent.data = Uri.parse("mailto:" + Email)
-                if (intent.resolveActivity(packageManager) != null) {
-                    startActivity(intent)
-                }
-            }
-            else{
-                Toast.makeText(this,"You have not installed gmail app",Toast.LENGTH_SHORT).show()
-            }
-
-
-        }
+//        call.setOnClickListener {
+//
+//            if(telephonyManager.phoneType != TelephonyManager.PHONE_TYPE_NONE){
+//                if(isCallPermissionEnabled){
+//                    callIntent(jsonobject)
+//                }
+//                else{
+//                    CallPermission()
+//                }
+//            }
+//            else{
+//              Toast.makeText(this,"No Sim available",Toast.LENGTH_SHORT).show()
+//            }
+//
+//        }
+//
+//        email.setOnClickListener {
+//
+//            isAppInstalledOrNot(this,"com.google.android.gm")
+//            if(isAppInstalledOrNot(this,"com.google.android.gm") == true){
+//            val intent = Intent(Intent.ACTION_SENDTO)
+//            var Email:String = jsonobject.getString("mail")
+//            Log.d("Email",""+Email)
+//            intent.data = Uri.parse("mailto:" + Email)
+//                if (intent.resolveActivity(packageManager) != null) {
+//                    startActivity(intent)
+//                }
+//            }
+//            else{
+//                Toast.makeText(this,"You have not installed gmail app",Toast.LENGTH_SHORT).show()
+//            }
+//
+//
+//        }
 
         location.setOnClickListener {
 //            Toast.makeText(this,"location",Toast.LENGTH_SHORT).show()
-            clickHere()
+            OpenLocationDialog()
         }
 
 
@@ -222,24 +231,24 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 //            startActivity(openURL)
 //        }
 
-        share.setOnClickListener {
-            //            Toast.makeText(this,"Share",Toast.LENGTH_SHORT).show()
-            val shareIntent = Intent()
-            shareIntent.action = Intent.ACTION_SEND
-            shareIntent.type="text/plain"
-
-            var share:String = jsonobject.getString("share")
-            var androidRateusUrl:String = jsonobject.getString("androidRateusUrl")
-            Log.d("share",""+share)
-
-            shareIntent.putExtra(Intent.EXTRA_TEXT, share+" "+androidRateusUrl)
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(Intent.createChooser(shareIntent,share+" "+androidRateusUrl))
-            }
-        }
+//        share.setOnClickListener {
+//            //            Toast.makeText(this,"Share",Toast.LENGTH_SHORT).show()
+//            val shareIntent = Intent()
+//            shareIntent.action = Intent.ACTION_SEND
+//            shareIntent.type="text/plain"
+//
+//            var share:String = jsonobject.getString("share")
+//            var androidRateusUrl:String = jsonobject.getString("androidRateusUrl")
+//            Log.d("share",""+share)
+//
+//            shareIntent.putExtra(Intent.EXTRA_TEXT, share+" "+androidRateusUrl)
+//            if (intent.resolveActivity(packageManager) != null) {
+//                startActivity(Intent.createChooser(shareIntent,share+" "+androidRateusUrl))
+//            }
+//        }
     }
 
-    fun clickHere() {
+    fun OpenLocationDialog() {
 
         locations= mutableListOf<Any>()
 
@@ -256,7 +265,7 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 
         val dataAdapter = DataAdapter(locations,this)
 
-        customDialog = CustomListViewDialog(this@homeActivity, dataAdapter)
+        customDialog = CustomListViewDialog(this@HomeActivity, dataAdapter)
 
 
 
@@ -291,7 +300,7 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
     }
 
     fun navigation(){
-        val intent = Intent(this@homeActivity, ScanActivity::class.java)
+        val intent = Intent(this@HomeActivity, ScanActivity::class.java)
         startActivityForResult(intent, ADD_TASK_REQUEST)
 
     }
@@ -304,7 +313,7 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 //    }
 
     fun CallPermission(){
-        if (ActivityCompat.checkSelfPermission(this@homeActivity,
+        if (ActivityCompat.checkSelfPermission(this@HomeActivity,
         Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)
             {
                 makeRequest(1)
@@ -314,7 +323,7 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 
 //    fun CameraPermission(){
 //
-//        if (ActivityCompat.checkSelfPermission(this@homeActivity,
+//        if (ActivityCompat.checkSelfPermission(this@HomeActivity,
 //                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
 //        {
 //            makeRequest(2)
@@ -372,7 +381,7 @@ class homeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
         override fun onPreExecute() {
             super.onPreExecute()
             webview.setVisibility(View.INVISIBLE)
-            barcodeProgressBar.visibility = View.VISIBLE
+//            barcodeProgressBar.visibility = View.VISIBLE
 
         }
 

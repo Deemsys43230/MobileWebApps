@@ -27,12 +27,12 @@
         </receiver>
 
         <activity
-                android:name=".homeActivity"
+                android:name=".HomeActivity"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"
                 android:screenOrientation="portrait">
         </activity>
         <activity
-                android:name=".MainActivity"
+                android:name=".SplashActivity"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"
                 android:screenOrientation="portrait">
             <intent-filter>
