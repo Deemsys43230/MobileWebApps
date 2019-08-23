@@ -38,6 +38,7 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
         jsonobject = JSONObject(convertString)
         location.setText(jsonobject.getString("location"))
         customDialog?.dismiss()
+        barcodeProgressBar.visibility = View.VISIBLE
         webview.loadUrl(jsonobject.getString("websiteUrl"))
         val editor: SharedPreferences.Editor = sharedPreference.edit()
         Log.d("SelectedLoc:",""+convertString)
@@ -102,7 +103,7 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
         barcodeProgressBar = findViewById(R.id.progressBar)
         progressBar = findViewById(R.id.progressBar2)
         progressBar.setVisibility(View.GONE)
-        barcodeProgressBar.visibility = View.GONE
+        barcodeProgressBar.visibility = View.VISIBLE
         telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
 //        CheckPerrmissions()
@@ -151,14 +152,14 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 
         webview.setWebViewClient(object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-//                barcodeProgressBar.visibility = View.VISIBLE
+                barcodeProgressBar.setVisibility(View.VISIBLE)
 //                progressBar.setVisibility(View.VISIBLE)
                 view.loadUrl(url)
                 return true
             }
 
             override fun onPageFinished(view: WebView, url: String) {
-//                barcodeProgressBar.setVisibility(View.GONE)
+                barcodeProgressBar.setVisibility(View.GONE)
 //                progressBar.setVisibility(View.GONE)
             }
         })
@@ -381,7 +382,7 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
         override fun onPreExecute() {
             super.onPreExecute()
             webview.setVisibility(View.INVISIBLE)
-//            barcodeProgressBar.visibility = View.VISIBLE
+            barcodeProgressBar.visibility = View.VISIBLE
 
         }
 

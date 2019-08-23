@@ -8,32 +8,24 @@
         android:id="@+id/root_layout"
         tools:context=".HomeActivity">
 
-    <android.support.v7.widget.CardView
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            card_view:cardCornerRadius="4dp"
-            card_view:cardElevation="5dp">
-
         <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp">
+                android:layout_height="70dp"
+                android:background="@color/colorsplash">
 
             <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true">
+                    android:layout_marginLeft="10dp">
 
                 <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginTop="3dp"
                         android:id="@+id/rateus"
-                        android:src="@drawable/locations"/>
+                        android:src="@drawable/ic_location_on"/>
 
                 <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -42,8 +34,8 @@
                         android:text="Location"
                         android:singleLine="true"
                         android:textSize="18sp"
-                        android:textStyle="normal"
-                        android:textColor="@color/colorsplash"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
                         android:layout_marginLeft="3dp"/>
 
             </LinearLayout>
@@ -51,21 +43,17 @@
             <ProgressBar
                     android:indeterminate="true"
                     android:indeterminateTintMode="src_in"
-                    android:indeterminateTint="@color/colorsplash"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:indeterminateTint="@color/white"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:id="@+id/progressBar"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="10dp"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:visibility="gone"/>
+                    android:layout_centerVertical="true"/>
 
 
         </RelativeLayout>
 
-
-
-    </android.support.v7.widget.CardView>
 
 
     <!--<RelativeLayout-->
