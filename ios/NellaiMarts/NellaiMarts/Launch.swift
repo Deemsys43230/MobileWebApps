@@ -70,9 +70,11 @@ class Launch: UIViewController {
                     self.Indicator.stopAnimating()
                     let defaults:UserDefaults = UserDefaults.standard
                     let sourceData = response.dictionaryObject
+                    defaults.set(sourceData!["Bhex"] as! String, forKey: "Bhex")
+                    defaults.set(sourceData!["Fhex"] as! String, forKey: "Fhex")
                     // From Odoo
                     if sourceData!["source"] as! String == "odoo"{
-                        print("From Odoo")
+                        //print("From Odoo")
                         let locations = sourceData!["odoo"] as! [[String:String]]
                         var dict:Dictionary! = [:]
                         if let index = defaults.value(forKey: "index") {
@@ -87,6 +89,9 @@ class Launch: UIViewController {
                         defaults.synchronize()
                         print(defaults.value(forKey: "locations")!)
                         //navigate to odoo webpage
+                        let storyboard = UIStoryboard(name: "Odoo", bundle: nil)
+                        let VC = storyboard.instantiateInitialViewController()
+                        self.present(VC!, animated: true, completion: nil)
                     }else{
                         // From Shopify
                         let locations = sourceData!["shopify"] as! [[String:String]]
