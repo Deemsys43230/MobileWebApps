@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.View
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -20,29 +19,27 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import android.support.design.widget.Snackbar
 import android.util.Log
-import kotlinx.android.synthetic.main.activity_home.*
-import org.json.JSONArray
 import org.json.JSONObject
+import java.io.Reader
 
 
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityReceiverListener {
+class SplashActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityReceiverListener {
 
     lateinit  var statusUtility:utilityClass
     lateinit var loading: TextView
 
     lateinit var progressBar: ProgressBar
     lateinit var sharedPreference: SharedPreferences
-//    val url = URL("https://s3.amazonaws.com/mobilewebapps/nellaimart.json")
+    val url = URL("https://s3.amazonaws.com/mobilewebapps/nellaimart.json")
 //    val url = URL("https://s3.amazonaws.com/mobilewebapps/shoppickk.json")
-    val url = URL("https://s3.amazonaws.com/mobilewebapps/nellaimart1.json")
+//    val url = URL("https://s3.amazonaws.com/mobilewebapps/nellaimart1.json")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_splash)
         statusUtility= utilityClass(this)
         statusUtility.StatusBarColor()
         registerReceiver(NetWorkChangeReciver(),
@@ -94,32 +91,22 @@ class MainActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityRecei
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
 
-            var resArray=JSONArray(result)
-            Log.d("ResponseResult",""+ resArray[0])
+//            var resArray=JSONArray(result)
+            var responsejson=result
+            Log.d("ResponseResult",""+ responsejson)
+//            Log.d("ResponseResult",""+ resArray[0])
             progressBar.visibility = View.GONE
             loading.visibility = View.GONE
             val editor: SharedPreferences.Editor = sharedPreference.edit()
             editor.commit()
-            editor.putString("NellaiMartDetails", resArray[0].toString())
+            editor.putString("NellaiMartDetails", responsejson)
             var arrayList:MutableList<Any> = mutableListOf<Any>()
 
-//            For Local test
-
-//            for(i in 0..resArray.length()-1){
-//
-//                var jsonObject:JSONObject
-//                jsonObject=resArray.getJSONObject(i)
-//                jsonObject.put("location","San Franciscooo")
-//                arrayList.add(jsonObject)
-//            }
-//
-//            editor.putString("LocationList",arrayList.toString())
-//            editor.commit()
-//            Log.d("LocalTest:",""+arrayList.toString())
-
-            editor.putString("LocationList",result)
+            var jsonObject:JSONObject = JSONObject(responsejson)
+            var locationStr:String=jsonObject.getJSONArray("odoo").toString()
+            editor.putString("LocationList",locationStr)
             editor.commit()
-            val intent = Intent(this@MainActivity, homeActivity::class.java)
+            val intent = Intent(this@SplashActivity, HomeActivity::class.java)
             startActivity(intent)
         }
 
@@ -144,7 +131,7 @@ class MainActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityRecei
 
     fun streamToString(inputStream: InputStream): String {
 
-        val bufferReader = BufferedReader(InputStreamReader(inputStream))
+        val bufferReader = BufferedReader(InputStreamReader(inputStream) as Reader?)
         var line: String
         var result = ""
 

@@ -1,153 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/root_layout"
-        tools:context=".homeActivity">
+        tools:context=".HomeActivity">
 
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/colorsplash"
-            android:id="@+id/relativeLayout"
-            app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_vertical"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="3dp">
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorsplash">
 
-            <ImageView android:layout_width="20dp"
-                       android:layout_height="20dp"
-                       android:layout_gravity="center_vertical"
-                       android:src="@drawable/ic_location_on"
-                       android:id="@+id/rateus"
-                       android:scaleType="fitXY"/>
-
-            <android.support.v7.widget.AppCompatTextView
+            <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:id="@+id/location"
-                    android:text="Location"
-                    android:singleLine="true"
-                    android:textSize="18sp"
-                    android:textStyle="normal"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginLeft="3dp"/>
+                    android:orientation="horizontal"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="10dp">
+
+                <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="3dp"
+                        android:id="@+id/rateus"
+                        android:src="@drawable/ic_location_on"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/location"
+                        android:text="Location"
+                        android:singleLine="true"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+            <ProgressBar
+                    android:indeterminate="true"
+                    android:indeterminateTintMode="src_in"
+                    android:indeterminateTint="@color/white"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:id="@+id/progressBar"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+
+
+        </RelativeLayout>
+
+
+    <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+    <!--</RelativeLayout>-->
 
 
 
-            <!--<ProgressBar-->
-                    <!--android:indeterminateTint="#FFFFFF"-->
-                    <!--android:layout_width="15dp"-->
-                    <!--android:layout_height="15dp"-->
-                    <!--android:id="@+id/progressBar"-->
-                    <!--android:layout_marginLeft="5dp"-->
-                    <!--android:layout_marginRight="5dp"/>-->
+    <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:background="@color/colorsplash"-->
+            <!--android:id="@+id/relativeLayout"-->
+            <!--app:layout_constraintTop_toTopOf="parent">-->
 
-        </LinearLayout>
-
-
-
-
-        <!--<ImageView android:layout_width="25dp"-->
-                   <!--android:layout_height="25dp"-->
-                   <!--android:src="@drawable/rateus"-->
-                   <!--android:id="@+id/rateus"-->
-                   <!--android:scaleType="fitXY"-->
-                   <!--android:layout_alignParentLeft="true"-->
-                   <!--android:layout_marginLeft="10dp"-->
-                   <!--android:layout_centerVertical="true"/>-->
-
-        <!--<TextView-->
-                <!--android:text="Rate Us"-->
+        <!--<LinearLayout-->
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/rateus"-->
-                <!--android:paddingLeft="10dp"-->
-                <!--android:layout_alignParentLeft="true"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_gravity="center_vertical"-->
                 <!--android:layout_centerVertical="true"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginTop="3dp">-->
+
+            <!--<ImageView android:layout_width="20dp"-->
+                       <!--android:layout_height="20dp"-->
+                       <!--android:layout_gravity="center_vertical"-->
+                       <!--android:src="@drawable/ic_location_on"-->
+                       <!--android:id="@+id/rateus"-->
+                       <!--android:scaleType="fitXY"/>-->
+
+            <!--<android.support.v7.widget.AppCompatTextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--android:id="@+id/location"-->
+                    <!--android:text="Location"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textStyle="normal"-->
+                    <!--android:textColor="#FFFFFF"-->
+                    <!--android:layout_marginLeft="3dp"/>-->
+
+
+        <!--</LinearLayout>-->
+        <!---->
+
+        <!--<TextView-->
+                <!--android:text="Nellai Marts"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/title"-->
                 <!--android:textSize="20sp"-->
+                <!--android:singleLine="true"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_centerVertical="true"-->
                 <!--android:textStyle="normal"-->
                 <!--android:textColor="#FFFFFF"/>-->
 
-
-        <!--<ImageView android:layout_width="30dp"-->
-                   <!--android:layout_height="30dp"-->
-                   <!--android:src="@drawable/ic_action_barcode_1"-->
-                   <!--android:layout_marginRight="10dp"-->
-                   <!--android:id="@+id/barcode"-->
-                   <!--android:scaleType="fitXY"-->
-                   <!--android:layout_alignParentLeft="true"-->
-                   <!--android:layout_marginLeft="10dp"-->
-                   <!--android:layout_centerVertical="true"/>-->
+        <!--<LinearLayout-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginTop="3dp">-->
 
 
-        <TextView
-                android:text="Nellai Marts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/title"
-                android:textSize="20sp"
-                android:singleLine="true"
-                android:layout_gravity="center_vertical"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:textStyle="normal"
-                android:textColor="#FFFFFF"/>
+            <!--<ImageView android:layout_width="20dp"-->
+                       <!--android:layout_height="20dp"-->
+                       <!--android:src="@drawable/call"-->
+                       <!--android:layout_marginRight="10dp"-->
+                       <!--android:id="@+id/call"-->
+                       <!--android:scaleType="fitXY"/>-->
 
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true">
+            <!--<ImageView android:layout_width="20dp"-->
+                       <!--android:layout_height="20dp"-->
+                       <!--android:src="@drawable/mail"-->
+                       <!--android:id="@+id/email"-->
+                       <!--android:layout_marginRight="10dp"-->
+                       <!--android:scaleType="fitXY"/>-->
 
+            <!--<ImageView android:layout_width="20dp"-->
+                       <!--android:layout_height="20dp"-->
+                       <!--android:src="@drawable/icons8_share_filled_90"-->
+                       <!--android:layout_marginRight="10dp"-->
+                       <!--android:id="@+id/share"-->
+                       <!--android:scaleType="fitXY"/>-->
 
-            <ImageView android:layout_width="20dp"
-                       android:layout_height="20dp"
-                       android:src="@drawable/call"
-                       android:layout_marginTop="3dp"
-                       android:layout_marginRight="10dp"
-                       android:id="@+id/call"
-                       android:scaleType="fitXY"/>
+            <!--<ProgressBar-->
+                    <!--android:indeterminateTint="@color/white"-->
+                    <!--android:layout_width="20dp"-->
+                    <!--android:layout_height="20dp"-->
+                    <!--android:id="@+id/progressBar"-->
+                    <!--android:layout_marginRight="5dp"/>-->
 
-            <ImageView android:layout_width="20dp"
-                       android:layout_height="20dp"
-                       android:src="@drawable/mail"
-                       android:id="@+id/email"
-                       android:layout_marginTop="3dp"
-                       android:layout_marginRight="10dp"
-                       android:scaleType="fitXY"/>
-
-            <ImageView android:layout_width="20dp"
-                       android:layout_height="20dp"
-                       android:layout_marginTop="3dp"
-                       android:src="@drawable/icons8_share_filled_90"
-                       android:layout_marginRight="10dp"
-                       android:id="@+id/share"
-                       android:scaleType="fitXY"/>
-
-            <ProgressBar
-                    android:indeterminateTint="@color/white"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="3dp"
-                    android:id="@+id/progressBar"
-                    android:layout_marginRight="5dp"/>
-
-        </LinearLayout>
-    </RelativeLayout>
+        <!--</LinearLayout>-->
+    <!--</RelativeLayout>-->
 
     <WebView
             android:id="@+id/webview"
@@ -157,17 +165,28 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="50dp">
     </WebView>
+
     <ProgressBar
             android:indeterminate="true"
             android:indeterminateTintMode="src_in"
             android:indeterminateTint="@color/colorsplash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:id="@+id/progressBar2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
 
-</android.support.constraint.ConstraintLayout>
+    <!--<ProgressBar-->
+            <!--android:indeterminate="true"-->
+            <!--android:indeterminateTintMode="src_in"-->
+            <!--android:indeterminateTint="@color/colorsplash"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/progressBar2"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintHorizontal_bias="0.5"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+</RelativeLayout>
