@@ -5,6 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.LightingColorFilter
+import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
@@ -19,6 +24,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.TextView
 import com.deemsysinc.nellaimarts.Utils.ScanActivity
 import com.deemsysinc.nellaimarts.Utils.utilityClass
@@ -60,12 +66,15 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 
     lateinit var webview: WebView
     lateinit var location:TextView
+    lateinit var location_icon:TextView
     lateinit var cancel:ImageView
+    lateinit var home_header:RelativeLayout
     lateinit var  progressBar: ProgressBar
     lateinit var  barcodeProgressBar: ProgressBar
     lateinit var sharedPreference: SharedPreferences
     private val ADD_TASK_REQUEST = 1
     lateinit  var statusUtility:utilityClass
+    lateinit var font:Typeface
 
     var isCameraPermissionEnabled:Boolean=false
     var isCallPermissionEnabled:Boolean=false
@@ -85,7 +94,9 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
         setContentView(R.layout.activity_home)
 
         statusUtility= utilityClass(this)
-        statusUtility.StatusBarColor()
+
+
+        font=Typeface.createFromAsset(assets,"fontawesome-webfont.ttf")
 
         var intent = getIntent()
         if(intent.extras != null){
@@ -100,6 +111,9 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 
         webview = findViewById(R.id.webview)
         location = findViewById(R.id.location)
+        location_icon=findViewById(R.id.location_icon)
+        home_header=findViewById(R.id.home_header)
+        location_icon.typeface=font
         barcodeProgressBar = findViewById(R.id.progressBar)
         progressBar = findViewById(R.id.progressBar2)
         progressBar.setVisibility(View.GONE)
@@ -108,7 +122,11 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 
 //        CheckPerrmissions()
 
+
         sharedPreference = PreferenceManager.getDefaultSharedPreferences(this)
+
+        SetColors()
+
 
 
 //        var items = sharedPreference.getString("LocationList","")
@@ -247,6 +265,20 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 //                startActivity(Intent.createChooser(shareIntent,share+" "+androidRateusUrl))
 //            }
 //        }
+    }
+
+    private fun SetColors() {
+
+        var jsonObject:JSONObject= JSONObject(sharedPreference.getString("NellaiMartDetails",""))
+        statusUtility.StatusBarColor(jsonObject.getString("Bhex").substring(0,7))
+        Log.d("SubsValue",""+jsonObject.getString("Bhex").substring(0,7))
+        location.setTextColor(Color.parseColor(jsonObject.getString("Fhex").substring(0,7)))
+        location_icon.setTextColor(Color.parseColor(jsonObject.getString("Fhex").substring(0,7)))
+        home_header.setBackgroundColor(Color.parseColor(jsonObject.getString("Bhex").substring(0,7)))
+        var intColor:Int=Color.parseColor(jsonObject.getString("Fhex").substring(0,7))
+        barcodeProgressBar.indeterminateTintList=ColorStateList.valueOf(intColor)
+
+
     }
 
     fun OpenLocationDialog() {

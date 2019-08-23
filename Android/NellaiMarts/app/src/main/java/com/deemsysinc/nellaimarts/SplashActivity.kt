@@ -41,7 +41,7 @@ class SplashActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityRec
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         statusUtility= utilityClass(this)
-        statusUtility.StatusBarColor()
+
         registerReceiver(NetWorkChangeReciver(),
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         )
@@ -94,6 +94,8 @@ class SplashActivity : AppCompatActivity(), NetWorkChangeReciver.ConnectivityRec
 //            var resArray=JSONArray(result)
             var responsejson=result
             Log.d("ResponseResult",""+ responsejson)
+            var localJson:JSONObject= JSONObject(responsejson)
+            statusUtility.StatusBarColor(localJson.getString("Bhex").substring(0,7))
 //            Log.d("ResponseResult",""+ resArray[0])
             progressBar.visibility = View.GONE
             loading.visibility = View.GONE

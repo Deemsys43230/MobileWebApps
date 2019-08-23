@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Nellai Marts</string>
+    <string name="location_icon">&#xf3c5;</string>
 </resources>
