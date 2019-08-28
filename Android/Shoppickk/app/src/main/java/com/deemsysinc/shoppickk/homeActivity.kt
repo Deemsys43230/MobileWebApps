@@ -3,6 +3,7 @@ package com.deemsysinc.shoppickk
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -36,6 +37,7 @@ class homeActivity : AppCompatActivity() {
         lateinit var share:ImageView
         lateinit var webview:WebView
         lateinit var rateus:ImageView
+        lateinit var backarrow:ImageView
         lateinit var  progressBar:ProgressBar
         lateinit var sharedPreference: SharedPreferences
         lateinit  var statusUtility:utilityClass
@@ -55,7 +57,9 @@ class homeActivity : AppCompatActivity() {
         email = findViewById(R.id.email)
         share = findViewById(R.id.share)
         webview = findViewById(R.id.webview)
-        rateus = findViewById(R.id.rateus)
+//        rateus = findViewById(R.id.rateus)
+        backarrow = findViewById(R.id.hardwareback)
+
         progressBar = findViewById(R.id.progressBar2)
 
         progressBar.visibility = View.VISIBLE
@@ -68,6 +72,34 @@ class homeActivity : AppCompatActivity() {
         var getvalue = sharedPreference.getString("ShoppickkDetails","")
         jsonobject = JSONObject(getvalue)
         Log.d("jsonobjectdata",""+getvalue)
+
+        val pInfo = applicationContext.getPackageManager().getPackageInfo(getPackageName(), 0)
+        val versionName = (pInfo.versionName).toFloat()
+        val playStoreVersion = 1.3
+
+        if(playStoreVersion > versionName){
+            val builder = AlertDialog.Builder(this)
+            //set title for alert dialog
+            builder.setTitle("Update Shoppickk")
+            //set message for alert dialog
+            builder.setMessage("Shoppickk recommends that you update to the latest version")
+
+            //performing positive action
+            builder.setPositiveButton("Update"){dialogInterface, which ->
+                val openURL = Intent(android.content.Intent.ACTION_VIEW)
+                val androidRateusUrl:String = jsonobject.getString("androidRateusUrl")
+                openURL.data = Uri.parse(androidRateusUrl)
+                startActivity(openURL)
+            }
+            //performing negative action
+            builder.setNegativeButton("Not Now"){dialogInterface, which ->
+            }
+            // Create the AlertDialog
+            val alertDialog: AlertDialog = builder.create()
+            // Set other dialog properties
+            alertDialog.setCancelable(false)
+            alertDialog.show()
+        }
 
 
 //        webview.getSettings().setBuiltInZoomControls(true)
@@ -89,6 +121,11 @@ class homeActivity : AppCompatActivity() {
 
             override fun onPageFinished(view: WebView, url: String) {
                 progressBar.setVisibility(View.GONE)
+                if(webview.canGoBack()){
+                    backarrow.visibility=View.VISIBLE
+                }else{
+                    backarrow.visibility=View.GONE
+                }
             }
         })
 
@@ -122,12 +159,18 @@ class homeActivity : AppCompatActivity() {
             }
         }
 
-        rateus.setOnClickListener {
-            val openURL = Intent(android.content.Intent.ACTION_VIEW)
-            var androidRateusUrl:String = jsonobject.getString("androidRateusUrl")
-            openURL.data = Uri.parse(androidRateusUrl)
-            startActivity(openURL)
+        backarrow.setOnClickListener {
+            if(webview.canGoBack()){
+                webview.goBack()
+            }
         }
+
+//        rateus.setOnClickListener {
+//            val openURL = Intent(android.content.Intent.ACTION_VIEW)
+//            var androidRateusUrl:String = jsonobject.getString("androidRateusUrl")
+//            openURL.data = Uri.parse(androidRateusUrl)
+//            startActivity(openURL)
+//        }
 
         share.setOnClickListener {
 //            Toast.makeText(this,"Share",Toast.LENGTH_SHORT).show()
@@ -224,8 +267,12 @@ class homeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        moveTaskToBack(true)
-        exitProcess(-1)
+        if(webview.canGoBack()){
+            webview.goBack()
+        }else{
+            moveTaskToBack(true)
+            exitProcess(-1)
+        }
     }
 
 

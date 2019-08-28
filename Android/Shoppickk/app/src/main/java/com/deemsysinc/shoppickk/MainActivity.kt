@@ -93,7 +93,7 @@ class MainActivity :  AppCompatActivity(), NetWorkChangeReciver.ConnectivityRece
                 loading.visibility = View.GONE
                 val editor: SharedPreferences.Editor = sharedPreference.edit()
                 editor.putString("ShoppickkDetails", result)
-                editor.commit()
+                editor.apply()
                 val intent = Intent(this@MainActivity, homeActivity::class.java)
                 startActivity(intent)
             }
