@@ -75,12 +75,12 @@ class homeActivity : AppCompatActivity() {
 
         val pInfo = applicationContext.getPackageManager().getPackageInfo(getPackageName(), 0)
         val versionName = (pInfo.versionName).toFloat()
-        val playStoreVersion = 1.3
+        val playStoreVersion = jsonobject.getString("androidVersion").toFloat()
 
         if(playStoreVersion > versionName){
             val builder = AlertDialog.Builder(this)
             //set title for alert dialog
-            builder.setTitle("Update Shoppickk")
+            builder.setTitle("Update Available")
             //set message for alert dialog
             builder.setMessage("Shoppickk recommends that you update to the latest version")
 
@@ -121,6 +121,7 @@ class homeActivity : AppCompatActivity() {
 
             override fun onPageFinished(view: WebView, url: String) {
                 progressBar.setVisibility(View.GONE)
+                Log.d("MyURL",url)
                 if(webview.canGoBack()){
                     backarrow.visibility=View.VISIBLE
                 }else{
