@@ -20,6 +20,7 @@ import android.support.v4.app.ActivityCompat
 import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.View
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
@@ -87,6 +88,8 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 
     lateinit var locations:MutableList<Any>
 
+    lateinit var webChromeClient: WebChromeClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -109,7 +112,20 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 //        rateus = findViewById(R.id.rateus)
 //        barcode = findViewById(R.id.barcode)
 
+
+
         webview = findViewById(R.id.webview)
+        webview.settings.javaScriptEnabled = true
+        webview.settings.builtInZoomControls = true
+        webview.settings.displayZoomControls = false
+        webview.settings.setAppCacheEnabled(true)
+        webview.settings.domStorageEnabled = true
+//        webview.settings.databaseEnabled = true
+//        webview.webChromeClient = WebChromeClient()
+//        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN){
+//            webview.settings.allowFileAccessFromFileURLs =  true
+//            webview.settings.allowFileAccessFromFileURLs = true
+//        }
         location = findViewById(R.id.location)
         location_icon=findViewById(R.id.location_icon)
         home_header=findViewById(R.id.home_header)
@@ -129,17 +145,6 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 
 
 
-//        var items = sharedPreference.getString("LocationList","")
-//        var locationArray:JSONArray;
-//        locationArray= JSONArray(items)
-//        locations= mutableListOf<Any>()
-//        Log.d("LocArrLength",""+locationArray.length())
-//        for(k in 0..locationArray.length()-1){
-//
-//            var jsonObject:JSONObject
-//            jsonObject=locationArray.getJSONObject(k)
-//            locations.add(jsonObject)
-//        }
 
         if(sharedPreference.contains("Selectedlocation")){
             Log.d("Selectedlocations",""+sharedPreference.getString("Selectedlocation",""))
@@ -160,14 +165,15 @@ class HomeActivity : AppCompatActivity(), DataAdapter.RecyclerViewItemClickListe
 
 
 //        webview.getSettings().setBuiltInZoomControls(true)
-        webview.setVerticalScrollBarEnabled(false)
-        webview.setHorizontalScrollBarEnabled(false)
-        webview.getSettings().setDisplayZoomControls(false)
-        webview.getSettings().setJavaScriptEnabled(true)
+       // webview.setVerticalScrollBarEnabled(false)
+        //webview.setHorizontalScrollBarEnabled(false)
+        //webview.getSettings().setDisplayZoomControls(false)
+        //webview.getSettings().setJavaScriptEnabled(true)
+        //webview.settings.pl
 
         var websiteUrl:String = jsonobject.getString("websiteUrl")
-//        webview.setWebViewClient(WebViewClient())
 
+        Log.d("PrintWebsiteUrl",""+websiteUrl);
         webview.setWebViewClient(object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 barcodeProgressBar.setVisibility(View.VISIBLE)
